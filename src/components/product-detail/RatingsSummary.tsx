@@ -1,0 +1,22 @@
+import { FiStar } from 'react-icons/fi';
+
+interface RatingsSummaryProps {
+    rating: number;
+    totalReviews: number;
+}
+
+export const RatingsSummary = ({ rating, totalReviews }: RatingsSummaryProps) => {
+
+
+    return (
+        <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 px-2 py-1 bg-accent text-white rounded text-sm font-semibold">
+                <span>{rating.toFixed(1)}</span>
+                <FiStar size={14} fill="currentColor" />
+            </div>
+            <span className="text-sm text-gray-600">
+                ({totalReviews.toLocaleString('en-IN')} {totalReviews === 1 ? 'Review' : 'Reviews'})
+            </span>
+        </div>
+    );
+};
