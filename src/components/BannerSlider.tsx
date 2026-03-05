@@ -34,11 +34,11 @@ export const BannerSlider = ({ banners }: BannerSliderProps) => {
         {banners.map((banner) => (
           <SwiperSlide key={banner._id}>
             <Link to={banner.link || '#'} draggable="false">
-              <div className="w-full overflow-hidden bg-gray-100 aspect-[1900/650]">
+              <div className="w-full overflow-hidden bg-gray-100 flex items-center justify-center max-h-40 sm:max-h-56 md:max-h-72 lg:max-h-80 xl:max-h-96">
                 <img
                   src={banner.image}
                   alt={banner.title}
-                  className="h-full w-full object-contain pointer-events-none"
+                  className="w-full h-full object-contain pointer-events-none"
                   loading="lazy"
                 />
               </div>
