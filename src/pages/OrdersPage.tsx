@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { OrderService } from '../services/order.service';
-import { FiPackage, FiChevronRight, FiClock, FiCheckCircle, FiTruck, FiXCircle } from 'react-icons/fi';
+import { FiPackage, FiChevronRight, FiClock, FiCheckCircle, FiTruck, FiXCircle, FiDownload, FiMapPin } from 'react-icons/fi';
 
 interface OrderItem {
   product: {
@@ -25,6 +25,9 @@ interface Order {
   status: 'pending_payment' | 'confirmed' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
   total: number;
   items: OrderItem[];
+  shipmentStatus?: string;
+  courier?: string;
+  awbNumber?: string;
 }
 
 const statusConfig: Record<string, { color: string; icon: any; label: string }> = {
@@ -133,15 +136,33 @@ export const OrdersPage = () => {
                 {/* Body */}
                 <div className="p-6">
                   <div className="flex flex-col md:flex-row gap-6 items-start">
-                    {/* Status Badge */}
-                    <div className="md:w-48 flex-shrink-0">
+                    {/* Status Badge & Shipping Info */}
+                    <div className="md:w-64 flex-shrink-0 border-r pr-6 border-gray-100">
                       <div className={`inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-medium ${statusInfo.color}`}>
                         <StatusIcon className="w-3.5 h-3.5" />
                         {statusInfo.label}
                       </div>
-                      <p className="mt-2 text-xs text-gray-500">
-                        Latest update: {new Date(order.createdAt).toLocaleTimeString()}
-                      </p>
+
+                      {order.awbNumber && (
+                        <div className="mt-4 bg-blue-50/50 rounded-lg p-3 border border-blue-100">
+                          <p className="text-xs font-bold text-gray-900 mb-1 flex items-center gap-1.5">
+                            <FiTruck className="text-blue-600" /> {order.courier}
+                          </p>
+                          <p className="text-xs text-gray-600 font-mono">AWB: {order.awbNumber}</p>
+                          <p className="text-[10px] text-gray-500 mt-1 uppercase tracking-wide font-medium">Status: {order.shipmentStatus}</p>
+                        </div>
+                      )}
+
+                      <div className="mt-4 space-y-2">
+                        {order.awbNumber && (
+                          <Link to={`/tracking/${order._id}`} className="w-full bg-primary-600 text-white text-xs font-bold py-2 rounded-lg hover:bg-primary-700 transition flex items-center justify-center gap-1.5">
+                            <FiMapPin /> Track Order
+                          </Link>
+                        )}
+                        <button className="w-full bg-white border border-gray-200 text-gray-700 text-xs font-bold py-2 rounded-lg hover:bg-gray-50 transition flex items-center justify-center gap-1.5 shadow-sm">
+                          <FiDownload /> Download Invoice
+                        </button>
+                      </div>
                     </div>
 
                     {/* Order Items Preview */}

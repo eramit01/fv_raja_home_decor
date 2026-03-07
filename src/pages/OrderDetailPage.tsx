@@ -135,9 +135,14 @@ export const OrderDetailPage = () => {
                                             <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
                                         </div>
                                         <div className="flex-1">
-                                            <Link to={`/product/${item.product._id}`} className="font-medium text-gray-900 hover:text-primary-600 line-clamp-2">
-                                                {item.name}
-                                            </Link>
+                                            {/* Guard against deleted products where item.product is null */}
+                                            {item.product?._id ? (
+                                                <Link to={`/product/${item.product._id}`} className="font-medium text-gray-900 hover:text-primary-600 line-clamp-2">
+                                                    {item.name}
+                                                </Link>
+                                            ) : (
+                                                <p className="font-medium text-gray-900 line-clamp-2">{item.name}</p>
+                                            )}
                                             <div className="mt-1 space-y-1">
                                                 {item.variant && (
                                                     <p className="text-xs text-gray-600">
@@ -173,6 +178,7 @@ export const OrderDetailPage = () => {
                                         </div>
                                     </div>
                                 ))}
+
                             </div>
                         </div>
 

@@ -22,6 +22,7 @@ import { StickyBottomBar } from '../components/product-detail/StickyBottomBar';
 import { FragranceSelector } from '../components/product-detail/FragranceSelector';
 import { GiftCustomization, GiftOccasion } from '../components/product-detail/GiftCustomization';
 import { ProductSpecifications } from '../components/product-detail/ProductSpecifications';
+import { PincodeChecker } from '../components/product-detail/PincodeChecker';
 import { api } from '../services/api';
 import { ProductDetailSkeleton } from '../components/skeletons/ProductDetailSkeleton';
 
@@ -393,6 +394,11 @@ const ProductDetailPage = () => {
                             <p className="text-xs text-gray-500 mt-2">
                               Free shipping on all prepaid orders • 7-day easy returns
                             </p>
+                          </div>
+
+                          {/* Pincode Delivery Checker */}
+                          <div className="mt-4">
+                            <PincodeChecker />
                           </div>
                         </div>
                       );

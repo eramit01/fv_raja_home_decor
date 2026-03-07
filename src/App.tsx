@@ -23,6 +23,7 @@ const WishlistPage = lazy(() => import('./pages/WishlistPage').then(module => ({
 const FAQPage = lazy(() => import('./pages/FAQPage').then(module => ({ default: module.FAQPage })));
 const PrivacyPolicyPage = lazy(() => import('./pages/PrivacyPolicyPage').then(module => ({ default: module.PrivacyPolicyPage })));
 const TermsPage = lazy(() => import('./pages/TermsPage').then(module => ({ default: module.TermsPage })));
+const OrderTrackingPage = lazy(() => import('./pages/OrderTrackingPage').then(module => ({ default: module.OrderTrackingPage })));
 const RefundPolicyPage = lazy(() => import('./pages/RefundPolicyPage').then(module => ({ default: module.RefundPolicyPage })));
 const ShippingPolicyPage = lazy(() => import('./pages/ShippingPolicyPage').then(module => ({ default: module.ShippingPolicyPage })));
 const OrderSuccessPage = lazy(() => import('./pages/OrderSuccessPage').then(module => ({ default: module.OrderSuccessPage })));
@@ -91,6 +92,14 @@ function App() {
             }
           />
           <Route path="orders/:id" element={<OrderDetailPage />} />
+          <Route
+            path="tracking/:id"
+            element={
+              <ProtectedRoute>
+                <OrderTrackingPage />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="profile"
             element={
