@@ -337,7 +337,7 @@ const ProductDetailPage = () => {
               <button
                 onClick={handleAddToCart}
                 disabled={product.stock === 0}
-                className="flex-1 py-4 px-6 border border-primary-600 text-primary-600 font-bold rounded-sm border-2 hover:bg-primary-600 hover:text-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-sm tracking-wide"
+                className="flex-1 py-3 px-6 border border-primary-600 text-primary-600 font-bold rounded-sm border-2 hover:bg-primary-600 hover:text-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-sm tracking-wide"
               >
                 <FiShoppingBag className="w-5 h-5" />
                 <span>Add to Cart</span>
@@ -345,7 +345,7 @@ const ProductDetailPage = () => {
               <button
                 onClick={handleBuyNow}
                 disabled={product.stock === 0}
-                className="flex-1 py-4 px-6 bg-primary-600 text-white font-bold rounded-sm border-2 border-primary-600 hover:bg-primary-700 hover:text-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-sm tracking-wide shadow-md"
+                className="flex-1 py-3 px-6 bg-primary-600 text-white font-bold rounded-sm border-2 border-primary-600 hover:bg-primary-700 hover:text-white transition-all disabled:opacity-50 flex items-center justify-center gap-2 uppercase text-sm tracking-wide shadow-md"
               >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
                 <span>Buy Now</span>
@@ -368,7 +368,7 @@ const ProductDetailPage = () => {
                       return (
                         <div key="pricing" className="border-b border-gray-100 pb-6">
                           <div className="flex items-start justify-between">
-                            <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 leading-tight">
+                            <h1 className="text-xl lg:text-2xl font-bold text-gray-900 leading-tight">
                               {product.name}
                             </h1>
                           </div>

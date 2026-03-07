@@ -14,15 +14,16 @@ export const PricingBlock = ({ price, originalPrice }: PricingBlockProps) => {
     return (
         <div className="flex items-center gap-3 flex-wrap">
             {/* Selling Price */}
-            <div className="flex items-baseline gap-0.5">
-                <span className="text-lg text-gray-900 font-bold">₹</span>
-                <span className="text-3xl font-bold text-gray-900">{price.toLocaleString('en-IN')}</span>
+            <div className="flex items-center gap-1.5">
+                <span className="text-3xl font-bold text-gray-900 tracking-tight font-sans">
+                    ₹{price.toLocaleString('en-IN')}
+                </span>
             </div>
 
             {/* MRP (Crossed Out) */}
             {originalPrice && originalPrice > price && (
-                <div className="flex items-baseline text-gray-500 line-through decoration-gray-400">
-                    <span className="text-lg">₹{originalPrice.toLocaleString('en-IN')}</span>
+                <div className="flex items-center text-gray-400 line-through decoration-gray-300">
+                    <span className="text-base font-medium">₹{originalPrice.toLocaleString('en-IN')}</span>
                 </div>
             )}
 

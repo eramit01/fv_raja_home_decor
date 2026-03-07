@@ -48,14 +48,14 @@ export const FilterPanel = ({
         priceRange[1] !== priceRangeConfig.max;
 
     return (
-        <div className={`bg-white ${isMobile ? '' : 'rounded-lg border border-gray-200 shadow-sm'}`}>
+        <div className={`bg-white ${isMobile ? '' : 'rounded-lg border border-gray-100 shadow-sm'}`}>
             {/* Header */}
-            <div className="flex items-center justify-between p-4 border-b border-gray-100">
-                <h3 className="font-bold text-gray-900">Filters</h3>
+            <div className="flex items-center justify-between p-5 border-b border-gray-100">
+                <h3 className="text-lg font-semibold text-gray-900">Filters</h3>
                 {hasActiveFilters && (
                     <button
                         onClick={onClearAll}
-                        className="text-sm text-primary-600 hover:text-primary-700 font-medium"
+                        className="text-sm text-primary-600 hover:text-primary-700 font-medium transition-colors"
                     >
                         Clear All
                     </button>
@@ -64,12 +64,12 @@ export const FilterPanel = ({
 
             <div className="divide-y divide-gray-100">
                 {/* Price Range Filter */}
-                <div className="p-4">
+                <div className="p-5">
                     <button
                         onClick={() => toggleAccordion('price')}
                         className="flex items-center justify-between w-full text-left"
                     >
-                        <span className="font-semibold text-gray-800">Price Range</span>
+                        <span className="font-medium text-[15px] text-gray-800">Price Range</span>
                         {accordionState['price'] ? (
                             <FiChevronUp className="text-gray-500" />
                         ) : (
@@ -78,39 +78,41 @@ export const FilterPanel = ({
                     </button>
 
                     {accordionState['price'] && (
-                        <div className="mt-4 space-y-4">
-                            <div className="flex items-center gap-2">
-                                <span className="text-sm text-gray-600">₹{priceRange[0]}</span>
-                                <div className="flex-1 h-1 bg-gray-200 rounded relative">
-                                    <div
-                                        className="absolute h-1 bg-primary-600 rounded"
-                                        style={{
-                                            left: `${(priceRange[0] / priceRangeConfig.max) * 100}%`,
-                                            right: `${100 - (priceRange[1] / priceRangeConfig.max) * 100}%`,
+                        <div className="mt-5">
+                            <div className="flex items-center gap-3">
+                                <div className="flex-1">
+                                    <label className="text-xs font-semibold text-gray-500 mb-1 block uppercase">Min (₹)</label>
+                                    <input
+                                        type="number"
+                                        min={priceRangeConfig.min}
+                                        max={priceRangeConfig.max}
+                                        value={priceRange[0]}
+                                        onChange={(e) => {
+                                            const val = Number(e.target.value);
+                                            if (val <= priceRange[1]) {
+                                                onPriceChange([val, priceRange[1]]);
+                                            }
                                         }}
+                                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm font-medium text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow outline-none"
                                     />
                                 </div>
-                                <span className="text-sm text-gray-600">₹{priceRange[1]}</span>
-                            </div>
-                            <div className="flex gap-2">
-                                <input
-                                    type="range"
-                                    min={priceRangeConfig.min}
-                                    max={priceRangeConfig.max}
-                                    step={priceRangeConfig.step}
-                                    value={priceRange[0]}
-                                    onChange={(e) => onPriceChange([Number(e.target.value), priceRange[1]])}
-                                    className="flex-1 accent-primary-600"
-                                />
-                                <input
-                                    type="range"
-                                    min={priceRangeConfig.min}
-                                    max={priceRangeConfig.max}
-                                    step={priceRangeConfig.step}
-                                    value={priceRange[1]}
-                                    onChange={(e) => onPriceChange([priceRange[0], Number(e.target.value)])}
-                                    className="flex-1 accent-primary-600"
-                                />
+                                <div className="text-gray-400 font-medium mt-5">-</div>
+                                <div className="flex-1">
+                                    <label className="text-xs font-semibold text-gray-500 mb-1 block uppercase">Max (₹)</label>
+                                    <input
+                                        type="number"
+                                        min={priceRangeConfig.min}
+                                        max={priceRangeConfig.max}
+                                        value={priceRange[1]}
+                                        onChange={(e) => {
+                                            const val = Number(e.target.value);
+                                            if (val >= priceRange[0]) {
+                                                onPriceChange([priceRange[0], val]);
+                                            }
+                                        }}
+                                        className="w-full bg-gray-50 border border-gray-200 rounded-lg px-3 py-2 text-sm font-medium text-gray-900 focus:ring-2 focus:ring-primary-500 focus:border-primary-500 transition-shadow outline-none"
+                                    />
+                                </div>
                             </div>
                         </div>
                     )}
@@ -118,12 +120,12 @@ export const FilterPanel = ({
 
                 {/* Dynamic Filters */}
                 {filters.map((filter) => (
-                    <div key={filter.id} className="p-4">
+                    <div key={filter.id} className="p-5">
                         <button
                             onClick={() => toggleAccordion(filter.id)}
                             className="flex items-center justify-between w-full text-left"
                         >
-                            <span className="font-semibold text-gray-800">{filter.name}</span>
+                            <span className="font-medium text-[15px] text-gray-800">{filter.name}</span>
                             {accordionState[filter.id] ? (
                                 <FiChevronUp className="text-gray-500" />
                             ) : (
@@ -132,7 +134,7 @@ export const FilterPanel = ({
                         </button>
 
                         {accordionState[filter.id] && (
-                            <div className="mt-3 space-y-2">
+                            <div className="mt-4 space-y-3">
                                 {filter.options.map((option) => (
                                     <label
                                         key={option.value}
@@ -144,7 +146,7 @@ export const FilterPanel = ({
                                             onChange={() => onFilterChange(filter.id, option.value)}
                                             className="w-4 h-4 text-primary-600 border-gray-300 rounded focus:ring-primary-500 accent-primary-600"
                                         />
-                                        <span className="text-sm text-gray-700 group-hover:text-gray-900 flex items-center gap-1">
+                                        <span className="text-sm text-gray-600 group-hover:text-primary-700 transition-colors flex items-center gap-1">
                                             {filter.id === 'rating' && <FiStar className="text-yellow-500 fill-current" />}
                                             {option.label}
                                         </span>

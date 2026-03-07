@@ -133,7 +133,8 @@ export const HomePage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-10">
+    <main className="min-h-screen bg-gray-50 pb-10">
+      <h1 className="sr-only">Raja Home Decor - Premium Candles, Glass Vases, Thali Sets & Corporate Gifts</h1>
       {/* Banner Slider - Full Width */}
       <div className="w-full mt-2">
         <BannerSlider banners={banners} />
@@ -165,6 +166,6 @@ export const HomePage = () => {
 
       {/* Bulk CTA Section */}
       <BulkCTASection />
-    </div>
+    </main>
   );
 };

@@ -84,17 +84,7 @@ export const Footer = () => {
                     </div>
                 </div>
 
-                <div className="border-t border-primary-900 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-                    <p className="text-xs font-bold tracking-widest text-primary-500 uppercase">
-                        © {new Date().getFullYear()} <span className="text-accent">RAJA HOME DECOR</span> • LUXURY HOME ESSENTIALS
-                    </p>
-                    <div className="flex gap-6 text-gray-500 text-sm">
-                        <span>Visa</span>
-                        <span>Mastercard</span>
-                        <span>UPI</span>
-                        <span>Net Banking</span>
-                    </div>
-                </div>
+
             </div>
         </footer>
     );
