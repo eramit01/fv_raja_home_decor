@@ -73,9 +73,11 @@ export const LoginPage = () => {
     <div className="min-h-screen bg-[#fafafa] flex flex-col justify-center py-12 sm:px-6 lg:px-8 font-outfit">
       <div className="sm:mx-auto sm:w-full sm:max-w-md">
         <div className="flex justify-center mb-6">
-          <div className="w-16 h-16 bg-accent rounded-2xl flex items-center justify-center shadow-lg shadow-accent/20">
-            <FiUser className="text-primary-900 text-3xl" />
-          </div>
+          <img
+            src="/banners/Logo/favbar.png"
+            alt="Raja Home Decor"
+            className="h-28 w-auto object-contain rounded-2xl shadow-lg shadow-black/10"
+          />
         </div>
         <h2 className="text-center text-3xl font-bold text-gray-900 tracking-tight">
           Welcome Back
@@ -144,7 +146,7 @@ export const LoginPage = () => {
               <button
                 type="submit"
                 disabled={loading}
-                className="w-full flex items-center justify-center py-4 px-4 border border-transparent rounded-2xl shadow-xl shadow-accent/10 text-base font-bold text-primary-900 bg-accent hover:bg-accent-hover focus:outline-none transition-all active:scale-[0.98] disabled:opacity-70 group"
+                className="w-full flex items-center justify-center py-4 px-4 border border-transparent rounded-2xl shadow-xl shadow-accent/10 text-base font-bold text-white bg-accent hover:bg-accent-hover focus:outline-none transition-all active:scale-[0.98] disabled:opacity-70 group"
               >
                 {loading ? (
                   <div className="w-6 h-6 border-2 border-primary-900/30 border-t-primary-900 rounded-full animate-spin" />
