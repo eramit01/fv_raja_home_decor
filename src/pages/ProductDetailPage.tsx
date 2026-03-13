@@ -319,7 +319,7 @@ const ProductDetailPage = () => {
     <div className="min-h-screen bg-white pb-24 lg:pb-12 text-[#2A2421]">
       <div className="max-w-7xl mx-auto px-4 py-4 lg:py-8">
 
-        <div className="lg:grid lg:grid-cols-12 lg:gap-16 lg:items-start">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-10 lg:items-start">
 
           {/* Left Column: Image Gallery (Sticky on Desktop) */}
           <div className="lg:col-span-5 xl:col-span-5 lg:sticky lg:top-24 mx-auto w-full">
@@ -356,7 +356,7 @@ const ProductDetailPage = () => {
 
           {/* Right Column: Product Info & Controls */}
           <div className="lg:col-span-7 xl:col-span-7 mt-8 lg:mt-0">
-            <div className="flex flex-col gap-6 lg:gap-8">
+            <div className="flex flex-col gap-5 lg:gap-6">
 
               {/* Header Section */}
               {(() => {
@@ -367,14 +367,14 @@ const ProductDetailPage = () => {
                   switch (sectionId) {
                     case 'pricing':
                       return (
-                        <div key="pricing" className="border-b border-gray-100 pb-6">
+                        <div key="pricing" className="border-b border-gray-100 pb-4">
                           <div className="flex items-start justify-between">
-                            <h1 className="text-xl lg:text-2xl font-bold text-gray-900 leading-tight">
+                            <h1 className="text-xl lg:text-2xl font-bold text-gray-900 leading-tight tracking-tight">
                               {product.name}
                             </h1>
                           </div>
 
-                          <div className="mt-3 flex items-center gap-4">
+                          <div className="mt-2 flex items-center gap-4">
                             <RatingsSummary
                               rating={product.rating}
                               totalReviews={product.totalReviews}
@@ -386,7 +386,7 @@ const ProductDetailPage = () => {
                             )}
                           </div>
 
-                          <div className="mt-4">
+                          <div className="mt-3">
                             <PricingBlock
                               price={pricingResult.finalPrice}
                               originalPrice={pricingResult.basePrice}
@@ -397,7 +397,7 @@ const ProductDetailPage = () => {
                           </div>
 
                           {/* Pincode Delivery Checker */}
-                          <div className="mt-4">
+                          <div className="mt-3">
                             <PincodeChecker />
                           </div>
                         </div>
@@ -405,7 +405,7 @@ const ProductDetailPage = () => {
 
                     case 'variants':
                       return (
-                        <div key="variants" className="space-y-6">
+                        <div key="variants" className="space-y-5">
                           {/* Product Colors */}
                           {product.colors && product.colors.length > 0 && (
                             <div className="space-y-3">
@@ -535,7 +535,7 @@ const ProductDetailPage = () => {
                             const activePacks = activeVariant ? activeVariant.packs : product.packs;
                             const hasPacks = activePacks && activePacks.length > 0;
 
-                            if (product.fragrances && product.fragrances.length > 0 && !(product.allowMixedFragrance && hasPacks)) {
+                            if (product.fragrances && product.fragrances.length > 0 && !hasPacks) {
                               return (
                                 <div className="space-y-3 pt-2">
                                   <h3 className="text-base font-semibold text-gray-900">Choose Fragrance</h3>
@@ -745,7 +745,7 @@ const ProductDetailPage = () => {
                 };
 
                 return (
-                  <div className="flex flex-col gap-6 lg:gap-8">
+                  <div className="flex flex-col gap-5 lg:gap-6">
                     {layout.map(sectionId => renderSection(sectionId))}
                   </div>
                 );

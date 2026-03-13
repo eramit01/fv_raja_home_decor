@@ -12,7 +12,7 @@ interface Variant {
 interface VariantSelectorProps {
     variants: Variant[];
     selectedVariantId: string | null;
-    onSelectVariant: (variantId: string) => void;
+    onSelectVariant: (variantId: string | null) => void;
 }
 
 export const VariantSelector = ({
@@ -21,7 +21,7 @@ export const VariantSelector = ({
     onSelectVariant
 }: VariantSelectorProps) => {
     return (
-        <div className="space-y-3">
+        <div className="space-y-2.5">
             <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Select Option</h3>
             <div className="flex flex-wrap gap-3">
                 {variants.map((variant) => {
@@ -38,7 +38,7 @@ export const VariantSelector = ({
                     return (
                         <button
                             key={variant._id}
-                            onClick={() => onSelectVariant(variant._id)}
+                            onClick={() => onSelectVariant(isSelected ? null : variant._id)}
                             disabled={variant.stock === 0}
                             className={`flex flex-col items-center justify-center px-4 py-3 rounded-xl border-2 transition-all min-w-[110px] text-center relative ${isSelected
                                 ? 'border-accent bg-accent-soft text-text-gold font-bold ring-1 ring-accent'
