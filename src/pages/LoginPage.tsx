@@ -149,7 +149,10 @@ export const LoginPage = () => {
                 className="w-full flex items-center justify-center py-4 px-4 border border-transparent rounded-2xl shadow-xl shadow-accent/10 text-base font-bold text-white bg-accent hover:bg-accent-hover focus:outline-none transition-all active:scale-[0.98] disabled:opacity-70 group"
               >
                 {loading ? (
-                  <div className="w-6 h-6 border-2 border-primary-900/30 border-t-primary-900 rounded-full animate-spin" />
+                  <div className="flex items-center gap-2">
+                    <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                    <span>Signing in...</span>
+                  </div>
                 ) : (
                   <>
                     Sign In Now

@@ -6,7 +6,7 @@ interface SizeSelectorProps {
 
 export const SizeSelector = ({ sizes, selectedSize, onSelectSize }: SizeSelectorProps) => {
     return (
-        <div className="space-y-2.5">
+        <div className="space-y-2">
             <h3 className="text-base font-semibold text-gray-900">Select Size</h3>
 
             <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">

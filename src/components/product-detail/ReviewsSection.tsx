@@ -1,6 +1,8 @@
 import { useState, useEffect } from 'react';
 import { FiStar } from 'react-icons/fi';
 import { api } from '../../services/api';
+import { ReviewSkeleton } from '../skeletons/ReviewSkeleton';
+
 
 interface Review {
     _id: string;
@@ -49,8 +51,13 @@ export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
 
     if (loading && reviews.length === 0) {
         return (
-            <div className="text-center py-8">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+            <div className="space-y-4">
+                <h3 className="text-lg font-bold text-gray-900">Customer Reviews</h3>
+                <div className="space-y-4">
+                    {[...Array(3)].map((_, i) => (
+                        <ReviewSkeleton key={i} />
+                    ))}
+                </div>
             </div>
         );
     }

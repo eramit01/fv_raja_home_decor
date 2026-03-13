@@ -316,10 +316,10 @@ const ProductDetailPage = () => {
   }
 
   return (
-    <div className="min-h-screen bg-white pb-24 lg:pb-12 text-[#2A2421]">
-      <div className="max-w-7xl mx-auto px-4 py-4 lg:py-8">
+    <div className="min-h-screen bg-white pb-12 text-[#2A2421]">
+      <div className="max-w-7xl mx-auto px-4 py-2 lg:py-4">
 
-        <div className="lg:grid lg:grid-cols-12 lg:gap-10 lg:items-start">
+        <div className="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start">
 
           {/* Left Column: Image Gallery (Sticky on Desktop) */}
           <div className="lg:col-span-5 xl:col-span-5 lg:sticky lg:top-24 mx-auto w-full">
@@ -355,8 +355,8 @@ const ProductDetailPage = () => {
           </div>
 
           {/* Right Column: Product Info & Controls */}
-          <div className="lg:col-span-7 xl:col-span-7 mt-8 lg:mt-0">
-            <div className="flex flex-col gap-5 lg:gap-6">
+          <div className="lg:col-span-7 xl:col-span-7 mt-4 lg:mt-0">
+            <div className="flex flex-col gap-4 lg:gap-4">
 
               {/* Header Section */}
               {(() => {
@@ -367,14 +367,14 @@ const ProductDetailPage = () => {
                   switch (sectionId) {
                     case 'pricing':
                       return (
-                        <div key="pricing" className="border-b border-gray-100 pb-4">
+                        <div key="pricing" className="border-b border-gray-100 pb-3">
                           <div className="flex items-start justify-between">
                             <h1 className="text-xl lg:text-2xl font-bold text-gray-900 leading-tight tracking-tight">
                               {product.name}
                             </h1>
                           </div>
 
-                          <div className="mt-2 flex items-center gap-4">
+                          <div className="mt-1.5 flex items-center gap-3">
                             <RatingsSummary
                               rating={product.rating}
                               totalReviews={product.totalReviews}
@@ -386,18 +386,18 @@ const ProductDetailPage = () => {
                             )}
                           </div>
 
-                          <div className="mt-3">
+                          <div className="mt-2">
                             <PricingBlock
                               price={pricingResult.finalPrice}
                               originalPrice={pricingResult.basePrice}
                             />
-                            <p className="text-xs text-gray-500 mt-2">
+                            <p className="text-xs text-gray-500 mt-1">
                               Free shipping on all prepaid orders • 7-day easy returns
                             </p>
                           </div>
 
                           {/* Pincode Delivery Checker */}
-                          <div className="mt-3">
+                          <div className="mt-2">
                             <PincodeChecker />
                           </div>
                         </div>
@@ -405,10 +405,10 @@ const ProductDetailPage = () => {
 
                     case 'variants':
                       return (
-                        <div key="variants" className="space-y-5">
+                        <div key="variants" className="space-y-4">
                           {/* Product Colors */}
                           {product.colors && product.colors.length > 0 && (
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                               <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Select Color</h3>
                               <div className="flex flex-wrap gap-3">
                                 {product.colors.map((color, index) => {
@@ -537,7 +537,7 @@ const ProductDetailPage = () => {
 
                             if (product.fragrances && product.fragrances.length > 0 && !hasPacks) {
                               return (
-                                <div className="space-y-3 pt-2">
+                                <div className="space-y-2 pt-1.5">
                                   <h3 className="text-base font-semibold text-gray-900">Choose Fragrance</h3>
                                   <div className="flex flex-wrap gap-2">
                                     {product.fragrances.map((fragrance: string, index: number) => (
@@ -576,7 +576,7 @@ const ProductDetailPage = () => {
 
                             if (availableStyles && availableStyles.length > 0) {
                               return (
-                                <div className="space-y-3">
+                                <div className="space-y-2">
                                   <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Customize Style</h3>
                                   <div className="flex flex-wrap gap-3">
                                     {availableStyles.map((style: any) => {
@@ -617,7 +617,7 @@ const ProductDetailPage = () => {
                       return (
                         <div key="addons">
                           {product.addOns && product.addOns.length > 0 && (
-                            <div className="space-y-3">
+                            <div className="space-y-2">
                               <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Add-Ons</h3>
                               <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                                 {product.addOns.map((addon) => {
@@ -673,7 +673,7 @@ const ProductDetailPage = () => {
 
                             return (
                               <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm space-y-4">
-                                <h3 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-3">Price Breakdown</h3>
+                                <h3 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">Price Breakdown</h3>
 
                                 <div className="space-y-2.5 text-sm">
                                   <div className="flex justify-between text-gray-600">
@@ -710,7 +710,7 @@ const ProductDetailPage = () => {
                                   )}
                                 </div>
 
-                                <div className="border-t border-dashed border-gray-300 pt-4 flex justify-between items-center">
+                                <div className="border-t border-dashed border-gray-300 pt-3 flex justify-between items-center">
                                   <span className="text-base font-bold text-gray-900">Final Total</span>
                                   <span className="text-xl font-bold text-[#88651E]">₹{pricingResult.finalPrice}</span>
                                 </div>
@@ -722,7 +722,7 @@ const ProductDetailPage = () => {
 
                     case 'description':
                       return (
-                        <div key="description" className="hidden lg:block border-t border-gray-100 pt-6">
+                        <div key="description" className="hidden lg:block border-t border-gray-100 pt-4">
                           <ProductDescription
                             shortDescription={product.shortDescription || product.description.substring(0, 150)}
                             fullDescription={product.description}
@@ -745,7 +745,7 @@ const ProductDetailPage = () => {
                 };
 
                 return (
-                  <div className="flex flex-col gap-5 lg:gap-6">
+                  <div className="flex flex-col gap-4 lg:gap-4">
                     {layout.map(sectionId => renderSection(sectionId))}
                   </div>
                 );
@@ -755,7 +755,7 @@ const ProductDetailPage = () => {
         </div>
 
         {/* Bottom Sections */}
-        <div className="mt-12 space-y-12">
+        <div className="mt-8 space-y-8">
           {/* Mobile Description */}
           <div className="lg:hidden">
             <ProductDescription
@@ -766,17 +766,17 @@ const ProductDetailPage = () => {
             />
           </div>
 
-          <div className="border-t pt-8">
+          <div className="border-t pt-6">
             <ReviewsSection productId={product._id} />
           </div>
 
           {product.faqs && product.faqs.length > 0 && (
-            <div className="border-t pt-8">
+            <div className="border-t pt-6">
               <FAQSection faqs={product.faqs} />
             </div>
           )}
 
-          <div className="border-t pt-8 pb-8">
+          <div className="border-t pt-6 pb-4">
             <RelatedProducts productId={product._id} categoryId={product.category._id} />
           </div>
         </div>

@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { OrderService } from '../services/order.service';
 import { FiPackage, FiChevronRight, FiClock, FiCheckCircle, FiTruck, FiXCircle, FiDownload, FiMapPin } from 'react-icons/fi';
+import { OrderSkeleton } from '../components/skeletons/OrderSkeleton';
+
 
 interface OrderItem {
   product: {
@@ -60,8 +62,13 @@ export const OrdersPage = () => {
 
   if (isLoading) {
     return (
-      <div className="container mx-auto px-4 py-12 flex justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+      <div className="min-h-screen bg-gray-50 py-8">
+        <div className="container mx-auto px-4 max-w-5xl">
+          <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-8"></div>
+          {[...Array(3)].map((_, i) => (
+            <OrderSkeleton key={i} />
+          ))}
+        </div>
       </div>
     );
   }

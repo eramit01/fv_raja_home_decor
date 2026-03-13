@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useWishlist } from '../context/WishlistContext';
 import { useNavigate } from 'react-router-dom';
 import { FiTrash2, FiShoppingCart, FiHeart } from 'react-icons/fi';
+import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
+
 
 export const WishlistPage = () => {
     const { wishlist, wishlistCount, removeFromWishlist, clearWishlist, isLoading } = useWishlist();
@@ -46,8 +48,11 @@ export const WishlistPage = () => {
 
     if (isLoading) {
         return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-amber-600"></div>
+            <div className="min-h-screen bg-gray-50 py-8">
+                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="h-10 w-48 bg-gray-200 animate-pulse rounded mb-8"></div>
+                    <ProductListSkeleton count={8} />
+                </div>
             </div>
         );
     }

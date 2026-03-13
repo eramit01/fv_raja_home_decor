@@ -9,6 +9,8 @@ import { ProductService, ProductParams } from '../services/product.service';
 // import { categories } from '../data/categories';
 
 import { Product } from '../types';
+import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
+
 
 export const CategoryPage = () => {
     const { categorySlug = '' } = useParams<{ categorySlug: string }>();
@@ -161,13 +163,13 @@ export const CategoryPage = () => {
         console.log('CategoryPage: Price Range:', priceRange);
     }, [products, selectedFilters, priceRange]);
 
-    if (isLoading) {
-        return (
-            <div className="min-h-screen flex items-center justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
-            </div>
-        );
-    }
+    // if (isLoading) {
+    //     return (
+    //         <div className="min-h-screen flex items-center justify-center">
+    //             <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-primary-600"></div>
+    //         </div>
+    //     );
+    // }
 
 
     const activeFilterCount = Object.keys(selectedFilters).length + (priceRange[0] !== priceRangeConfig.min || priceRange[1] !== priceRangeConfig.max ? 1 : 0);
@@ -262,10 +264,16 @@ export const CategoryPage = () => {
                     <div className="flex-1">
                         {/* Product Count */}
                         <div className="mb-4 text-sm text-gray-600">
-                            Showing <span className="font-semibold text-gray-900">{filteredProducts.length}</span> products
+                            {isLoading ? (
+                                <div className="h-4 w-32 bg-gray-200 animate-pulse rounded" />
+                            ) : (
+                                <>Showing <span className="font-semibold text-gray-900">{filteredProducts.length}</span> products</>
+                            )}
                         </div>
 
-                        {filteredProducts.length > 0 ? (
+                        {isLoading ? (
+                            <ProductListSkeleton count={8} />
+                        ) : filteredProducts.length > 0 ? (
                             <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 md:gap-4">
                                 {filteredProducts.map((product: Product) => {
                                     // Logic for Automatic Badges

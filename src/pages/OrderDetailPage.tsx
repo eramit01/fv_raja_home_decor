@@ -2,6 +2,8 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { OrderService } from '../services/order.service';
 import { FiArrowLeft, FiPackage, FiTruck, FiMapPin, FiCreditCard } from 'react-icons/fi';
+import { Skeleton } from '../components/ui/Skeleton';
+
 
 interface Order {
     _id: string;
@@ -63,8 +65,27 @@ export const OrderDetailPage = () => {
 
     if (isLoading) {
         return (
-            <div className="container mx-auto px-4 py-12 flex justify-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <div className="min-h-screen bg-gray-50 py-8">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div className="h-6 w-32 bg-gray-200 animate-pulse rounded mb-6"></div>
+                    <div className="flex justify-between items-center mb-8">
+                        <div className="space-y-2">
+                            <Skeleton className="h-8 w-64" />
+                            <Skeleton className="h-4 w-48" />
+                        </div>
+                        <Skeleton className="h-10 w-32" />
+                    </div>
+                    <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div className="md:col-span-2 space-y-6">
+                            <Skeleton className="h-64 w-full rounded-xl" />
+                            <Skeleton className="h-48 w-full rounded-xl" />
+                        </div>
+                        <div className="space-y-6">
+                            <Skeleton className="h-48 w-full rounded-xl" />
+                            <Skeleton className="h-32 w-full rounded-xl" />
+                        </div>
+                    </div>
+                </div>
             </div>
         );
     }

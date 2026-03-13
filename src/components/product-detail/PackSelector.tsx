@@ -54,8 +54,8 @@ export const PackSelector = ({
     };
 
     return (
-        <div className="space-y-3">
-            <div className="space-y-2.5">
+        <div className="space-y-2.5">
+            <div className="space-y-2">
                 <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Select Pack</h3>
 
                 <div className="flex flex-wrap gap-3">

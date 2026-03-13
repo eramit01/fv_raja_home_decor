@@ -4,6 +4,8 @@ import { FiStar } from 'react-icons/fi';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { FreeMode } from 'swiper/modules';
 import { api } from '../../services/api';
+import { ProductCardSkeleton } from '../skeletons/ProductCardSkeleton';
+
 
 // Import Swiper styles
 import 'swiper/css';
@@ -49,9 +51,16 @@ export const RelatedProducts = ({ productId, categoryId }: RelatedProductsProps)
 
     if (loading) {
         return (
-            <div className="px-4">
-                <div className="text-center py-8">
-                    <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary-600 mx-auto"></div>
+            <div className="space-y-4 py-8 bg-gray-50/50">
+                <h3 className="text-lg font-bold text-gray-900 px-4">You May Also Like</h3>
+                <div className="px-4 overflow-hidden">
+                    <div className="flex gap-4">
+                        {[...Array(5)].map((_, i) => (
+                            <div key={i} className="min-w-[160px] md:min-w-[200px] flex-1">
+                                <ProductCardSkeleton />
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </div>
         );

@@ -15,16 +15,16 @@ export const Footer = () => {
                             Premium home decor and lifestyle products designed to elevate your living spaces. Experience luxury in every detail.
                         </p>
                         <div className="flex gap-4">
-                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-accent hover:text-primary-900 hover:scale-110 transition-all shadow-lg group">
+                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-white hover:text-[#141415] hover:scale-110 transition-all shadow-lg group">
                                 <FiInstagram className="w-5 h-5" />
                             </a>
-                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-accent hover:text-primary-900 hover:scale-110 transition-all shadow-lg group">
+                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-white hover:text-[#141415] hover:scale-110 transition-all shadow-lg group">
                                 <FiFacebook className="w-5 h-5 group-hover:fill-current" />
                             </a>
-                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-accent hover:text-primary-900 hover:scale-110 transition-all shadow-lg group">
+                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-white hover:text-[#141415] hover:scale-110 transition-all shadow-lg group">
                                 <FiYoutube className="w-5 h-5 group-hover:fill-current" />
                             </a>
-                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-accent hover:text-primary-900 hover:scale-110 transition-all shadow-lg group">
+                            <a href="#" className="w-11 h-11 rounded-full bg-primary-900/50 border border-primary-800/50 flex items-center justify-center hover:bg-white hover:text-[#141415] hover:scale-110 transition-all shadow-lg group">
                                 <FiTwitter className="w-5 h-5 group-hover:fill-current" />
                             </a>
                         </div>
