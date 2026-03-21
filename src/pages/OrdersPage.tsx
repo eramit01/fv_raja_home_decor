@@ -18,6 +18,11 @@ interface OrderItem {
   name: string;
   variant?: { label: string };
   pack?: { label: string };
+  style?: { label: string };
+  fragrance?: string;
+  fragrances?: string[];
+  size?: string;
+  selectedAttributes?: { [key: string]: string };
 }
 
 interface Order {
@@ -189,9 +194,20 @@ export const OrdersPage = () => {
                             </p>
                             <p className="text-xs text-gray-500 mt-1">
                               Qty: {item.quantity} × ₹{item.price.toLocaleString()}
-                              {(item.variant || item.pack) && (
+                              {(item.variant || item.pack || item.style || item.size || item.selectedAttributes || item.fragrance || (item.fragrances && item.fragrances.length > 0)) && (
                                 <span className="block mt-0.5 font-medium text-gray-700">
-                                  {item.variant?.label}{item.variant && item.pack ? ' • ' : ''}{item.pack?.label}
+                                  {item.variant?.label}
+                                  {item.variant && item.pack ? ' • ' : ''}
+                                  {item.pack?.label}
+                                  {(item.variant || item.pack) && item.size ? ' • ' : ''}
+                                  {item.size}
+                                  {(item.variant || item.pack || item.size) && item.selectedAttributes ? ' • ' : ''}
+                                  {item.selectedAttributes && !Array.isArray(item.selectedAttributes) && typeof item.selectedAttributes === 'object' ? Object.values(item.selectedAttributes).join(', ') : ''}
+                                  {item.selectedAttributes && Array.isArray(item.selectedAttributes) && item.selectedAttributes.map(a => typeof a === 'object' ? Object.values(a).join(', ') : String(a)).join(', ')}
+                                  {(item.variant || item.pack || item.size || item.selectedAttributes) && item.style ? ' • ' : ''}
+                                  {item.style?.label}
+                                  {(item.variant || item.pack || item.size || item.selectedAttributes || item.style) && (item.fragrance || (item.fragrances && item.fragrances.length > 0)) ? ' • ' : ''}
+                                  {item.fragrance || (item.fragrances && item.fragrances.length > 0 ? `${item.fragrances.length} Fragrances` : '')}
                                 </span>
                               )}
                             </p>

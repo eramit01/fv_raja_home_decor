@@ -22,7 +22,6 @@ import { StickyBottomBar } from '../components/product-detail/StickyBottomBar';
 import { FragranceSelector } from '../components/product-detail/FragranceSelector';
 import { GiftCustomization, GiftOccasion } from '../components/product-detail/GiftCustomization';
 import { ProductSpecifications } from '../components/product-detail/ProductSpecifications';
-import { PincodeChecker } from '../components/product-detail/PincodeChecker';
 import { api } from '../services/api';
 import { ProductDetailSkeleton } from '../components/skeletons/ProductDetailSkeleton';
 
@@ -259,21 +258,48 @@ const ProductDetailPage = () => {
       }
     }
 
+    // Construct a descriptive name for the cart item
+    let itemName = product.name;
+    const descriptions = [];
+    if (selectedVariant) descriptions.push(selectedVariant.label);
+    if (selectedPackId) {
+      const pack = product.variants?.find(v => v._id === selectedVariantId)?.packs?.find(p => p._id === selectedPackId)
+        || product.packs?.find((p: any) => p._id === selectedPackId || p.id === selectedPackId);
+      if (pack) descriptions.push(pack.label);
+    }
+    if (selectedColor) descriptions.push(selectedColor.label);
+    if (selectedFragrance) descriptions.push(selectedFragrance);
+
+    if (descriptions.length > 0) {
+      itemName += ` (${descriptions.join(', ')})`;
+    }
+
     const cartItem = {
       productId: product._id,
-      name: product.name,
+      name: itemName,
       image: selectedVariant?.image || product.images[0],
       price: pricingResult.finalPrice,
+      originalPrice: pricingResult.basePrice,
       quantity: 1, // Default to 1
       variantId: selectedVariantId || undefined,
       packId: selectedPackId || undefined,
       styleId: selectedStyleId || undefined,
       addOnIds: selectedAddOnIds,
+      // Color snapshot (NEW)
+      selectedAttributes: selectedColor ? { "Color": selectedColor.label } : undefined,
       // Legacy fields
       size: !selectedVariantId ? selectedSize?.name : undefined,
       fragrance: selectedFragrance,
       fragrances: product.allowMixedFragrance ? selectedFragrances : undefined,
-      giftCustomization: giftCustomization.active ? giftCustomization : undefined
+      giftCustomization: giftCustomization.active ? giftCustomization : undefined,
+      // Breakdown for UI rehydration
+      breakdown: {
+        basePrice: product.price,
+        multiplier: 1,
+        addOns: selectedAddOnIds, // Note: ideally these should be labels, but IDs work for logic
+        styles: selectedStyleId ? [selectedStyleId] : [],
+        attributes: []
+      }
     };
 
     if (!user) {
@@ -369,7 +395,7 @@ const ProductDetailPage = () => {
                       return (
                         <div key="pricing" className="border-b border-gray-100 pb-3">
                           <div className="flex items-start justify-between">
-                            <h1 className="text-xl lg:text-2xl font-bold text-gray-900 leading-tight tracking-tight">
+                            <h1 className="text-xl lg:text-3xl font-bold text-gray-900 leading-tight tracking-tight">
                               {product.name}
                             </h1>
                           </div>
@@ -379,11 +405,7 @@ const ProductDetailPage = () => {
                               rating={product.rating}
                               totalReviews={product.totalReviews}
                             />
-                            {product.category && (
-                              <span className="text-xs font-bold text-gray-500 uppercase tracking-widest">
-                                {product.category.name}
-                              </span>
-                            )}
+
                           </div>
 
                           <div className="mt-2">
@@ -398,7 +420,6 @@ const ProductDetailPage = () => {
 
                           {/* Pincode Delivery Checker */}
                           <div className="mt-2">
-                            <PincodeChecker />
                           </div>
                         </div>
                       );
@@ -408,29 +429,29 @@ const ProductDetailPage = () => {
                         <div key="variants" className="space-y-4">
                           {/* Product Colors */}
                           {product.colors && product.colors.length > 0 && (
-                            <div className="space-y-2">
-                              <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Select Color</h3>
-                              <div className="flex flex-wrap gap-3">
+                            <div className="mb-5">
+                              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Select Color</h3>
+                              <div className="flex flex-wrap gap-2.5">
                                 {product.colors.map((color, index) => {
                                   const isSelected = selectedColor?.label === color.label;
                                   return (
                                     <button
                                       key={index}
                                       onClick={() => setSelectedColor(isSelected ? null : color)}
-                                      className={`group relative w-10 h-10 rounded-full flex items-center justify-center transition-all ${isSelected
-                                        ? 'ring-2 ring-primary-600 ring-offset-2'
-                                        : 'hover:ring-2 hover:ring-gray-300 hover:ring-offset-2'
+                                      className={`group relative w-10 h-10 rounded-full flex items-center justify-center transition-all duration-200 ${isSelected
+                                        ? 'ring-2 ring-black ring-offset-2 scale-110'
+                                        : 'hover:ring-2 hover:ring-gray-300 hover:ring-offset-1'
                                         }`}
                                       title={color.label}
                                     >
                                       <span
-                                        className="w-full h-full rounded-full border border-gray-200 shadow-sm"
+                                        className="w-full h-full rounded-full border border-gray-100 shadow-sm"
                                         style={{ backgroundColor: color.hex }}
                                       />
                                       {isSelected && (
                                         <span className="absolute inset-0 flex items-center justify-center">
                                           <svg className="w-5 h-5 text-white drop-shadow-md" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
                                           </svg>
                                         </span>
                                       )}
@@ -439,8 +460,8 @@ const ProductDetailPage = () => {
                                 })}
                               </div>
                               {selectedColor && (
-                                <p className="text-sm font-medium text-gray-700">
-                                  Selected: <span className="text-gray-900 font-bold">{selectedColor.label}</span>
+                                <p className="text-[10px] font-black text-black uppercase tracking-widest mt-2 ml-1">
+                                  {selectedColor.label}
                                 </p>
                               )}
                             </div>
@@ -537,8 +558,8 @@ const ProductDetailPage = () => {
 
                             if (product.fragrances && product.fragrances.length > 0 && !hasPacks) {
                               return (
-                                <div className="space-y-2 pt-1.5">
-                                  <h3 className="text-base font-semibold text-gray-900">Choose Fragrance</h3>
+                                <div className="space-y-3 pt-1.5">
+                                  <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">Choose Fragrance</h3>
                                   <div className="flex flex-wrap gap-2">
                                     {product.fragrances.map((fragrance: string, index: number) => (
                                       <button
@@ -576,9 +597,9 @@ const ProductDetailPage = () => {
 
                             if (availableStyles && availableStyles.length > 0) {
                               return (
-                                <div className="space-y-2">
-                                  <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Customize Style</h3>
-                                  <div className="flex flex-wrap gap-3">
+                                <div className="mb-5">
+                                  <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Customize Style</h3>
+                                  <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
                                     {availableStyles.map((style: any) => {
                                       const styleId = style._id || style.id || style.label;
                                       const isSelected = selectedStyleId === styleId || (selectedStyleId === style.label);
@@ -590,14 +611,14 @@ const ProductDetailPage = () => {
                                             const idToSet = style._id || style.id || style.label;
                                             setSelectedStyleId(isSelected ? null : idToSet);
                                           }}
-                                          className={`flex flex-col items-center justify-center px-4 py-3 rounded-xl border-2 transition-all min-w-[100px] text-center ${isSelected
-                                            ? 'border-primary-600 bg-primary-600 text-white font-bold ring-1 ring-primary-600'
-                                            : 'border-gray-200 bg-white text-gray-700 hover:border-primary-600 hover:bg-primary-600 hover:text-white'
-                                            }`}
+                                          className={`group flex flex-col items-center justify-center p-2.5 rounded-lg border transition-all duration-200 relative min-h-[56px] ${isSelected
+                                            ? 'border-black bg-black text-white shadow-md scale-[1.02] z-10'
+                                            : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:shadow-sm'
+                                            } cursor-pointer`}
                                         >
-                                          <div className={`text-sm font-bold whitespace-nowrap ${isSelected ? 'text-white' : 'group-hover:text-white'}`}>{style.label}</div>
+                                          <div className="text-[11px] font-bold uppercase tracking-wide truncate w-full px-1">{style.label}</div>
                                           {style.priceAdjustment !== 0 && (
-                                            <div className={`text-xs mt-0.5 font-bold ${isSelected ? 'text-gray-200' : 'text-gray-600 group-hover:text-gray-200'}`}>
+                                            <div className={`text-[10px] mt-0.5 font-black ${isSelected ? 'text-gray-400' : 'text-gray-900'}`}>
                                               {style.priceAdjustment > 0 ? '+' : ''}₹{style.priceAdjustment}
                                             </div>
                                           )}
@@ -617,23 +638,23 @@ const ProductDetailPage = () => {
                       return (
                         <div key="addons">
                           {product.addOns && product.addOns.length > 0 && (
-                            <div className="space-y-2">
-                              <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Add-Ons</h3>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div className="mb-5">
+                              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Add-Ons</h3>
+                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                                 {product.addOns.map((addon) => {
                                   const isSelected = selectedAddOnIds.includes(addon._id);
                                   return (
-                                    <label key={addon._id} className={`flex items-center justify-between p-4 border-2 rounded-xl cursor-pointer transition-colors ${isSelected ? 'border-primary-600 bg-primary-50' : 'border-gray-200 hover:border-gray-300'}`}>
-                                      <div className="flex items-center gap-3">
-                                        <div className={`w-5 h-5 rounded border flex items-center justify-center transition-colors ${isSelected ? 'bg-primary-600 border-primary-600 text-white' : 'border-gray-300 bg-white'}`}>
-                                          {isSelected && <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>}
+                                    <label key={addon._id} className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-all duration-200 ${isSelected ? 'border-black bg-black text-white shadow-md' : 'border-gray-100 bg-gray-50/50 hover:border-gray-300'}`}>
+                                      <div className="flex items-center gap-2.5">
+                                        <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${isSelected ? 'bg-white border-white text-black' : 'border-gray-300 bg-white'}`}>
+                                          {isSelected && <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" /></svg>}
                                         </div>
                                         <div className="flex flex-col">
-                                          <span className={`text-sm font-bold ${isSelected ? 'text-primary-900' : 'text-gray-900'}`}>{addon.label}</span>
-                                          {addon.description && <span className="text-xs text-gray-500">{addon.description}</span>}
+                                          <span className={`text-[11px] font-black uppercase tracking-tight ${isSelected ? 'text-white' : 'text-gray-900'}`}>{addon.label}</span>
+                                          {addon.description && <span className={`text-[9px] font-medium ${isSelected ? 'text-gray-400' : 'text-gray-500'}`}>{addon.description}</span>}
                                         </div>
                                       </div>
-                                      <span className="text-sm font-bold text-gray-900">+₹{addon.price}</span>
+                                      <span className={`text-[11px] font-black ${isSelected ? 'text-white' : 'text-gray-900'}`}>+₹{addon.price}</span>
                                       <input
                                         type="checkbox"
                                         className="hidden"
@@ -672,47 +693,79 @@ const ProductDetailPage = () => {
                             if (!hasBreakdown) return null;
 
                             return (
-                              <div className="bg-white rounded-xl p-6 border border-gray-200 shadow-sm space-y-4">
-                                <h3 className="text-lg font-bold text-gray-900 border-b border-gray-100 pb-2">Price Breakdown</h3>
+                              <div className="bg-gray-50/50 rounded-xl p-5 border border-gray-100 space-y-4 mb-6 relative overflow-hidden">
+                                <div className="absolute top-0 right-0 w-24 h-24 bg-gray-100/30 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-110" />
 
-                                <div className="space-y-2.5 text-sm">
-                                  <div className="flex justify-between text-gray-600">
-                                    <span>Base Price</span>
-                                    <span className="font-medium text-gray-900">₹{basePriceForBreakdown}</span>
+                                <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] flex items-center justify-between">
+                                  <span>Order Price Breakdown</span>
+                                  <span className="h-px bg-gray-200 flex-1 ml-4"></span>
+                                </h3>
+
+                                <div className="space-y-3 text-[13px]">
+                                  {/* Base Price Line */}
+                                  <div className="flex justify-between text-gray-600 font-medium">
+                                    <span className="flex items-center gap-2">
+                                      Base Configuration
+                                    </span>
+                                    <span className="font-bold text-gray-900">₹{basePriceForBreakdown.toLocaleString()}</span>
                                   </div>
 
-                                  {pricingResult.discountAmount > 0 && (
-                                    <div className="flex justify-between text-[#88651E] font-bold">
-                                      <span>Discount</span>
-                                      <span className="font-bold">-₹{pricingResult.discountAmount}</span>
+                                  {/* Custom Style Line */}
+                                  {selectedStyleId && pricingResult.breakdown.styleAdjustment > 0 && (
+                                    <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-300">
+                                      <span className="flex items-center gap-2">
+                                        <span className="w-1 h-1 rounded-full bg-blue-400" />
+                                        {product.styles?.find(s => s._id === selectedStyleId)?.label || 'Selected Style'}
+                                      </span>
+                                      <span className="font-bold text-gray-900">+₹{pricingResult.breakdown.styleAdjustment.toLocaleString()}</span>
                                     </div>
                                   )}
 
-                                  {pricingResult.breakdown.styleAdjustment > 0 && (
-                                    <div className="flex justify-between text-gray-600">
-                                      <span>Style Adjustment</span>
-                                      <span className="font-medium text-gray-900">+₹{pricingResult.breakdown.styleAdjustment}</span>
+                                  {/* Add-ons Line */}
+                                  {selectedAddOnIds.length > 0 && pricingResult.breakdown.addOnsTotal > 0 && (
+                                    <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-400">
+                                      <span className="flex items-center gap-2">
+                                        <span className="w-1 h-1 rounded-full bg-purple-400" />
+                                        Add-ons ({selectedAddOnIds.length})
+                                      </span>
+                                      <span className="font-bold text-gray-900">+₹{pricingResult.breakdown.addOnsTotal.toLocaleString()}</span>
                                     </div>
                                   )}
 
-                                  {pricingResult.breakdown.addOnsTotal > 0 && (
-                                    <div className="flex justify-between text-gray-600">
-                                      <span>Add-Ons</span>
-                                      <span className="font-medium text-gray-900">+₹{pricingResult.breakdown.addOnsTotal}</span>
-                                    </div>
-                                  )}
-
+                                  {/* Personalization Line */}
                                   {giftCustomization.active && giftCustomization.price > 0 && (
-                                    <div className="flex justify-between text-gray-600">
-                                      <span>Gift Personalization</span>
-                                      <span className="font-medium text-gray-900">+₹{giftCustomization.price}</span>
+                                    <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-500">
+                                      <span className="flex items-center gap-2">
+                                        <span className="w-1 h-1 rounded-full bg-orange-400" />
+                                        Gift Personalization
+                                      </span>
+                                      <span className="font-bold text-gray-900">+₹{giftCustomization.price.toLocaleString()}</span>
+                                    </div>
+                                  )}
+
+                                  {/* Discount Line */}
+                                  {pricingResult.discountAmount > 0 && (
+                                    <div className="flex justify-between text-green-600 font-bold bg-green-50/50 -mx-2 px-2 py-1.5 rounded-lg border border-green-100/50">
+                                      <span className="flex items-center gap-2 italic">
+                                        Total Discount Applied
+                                      </span>
+                                      <span className="tracking-tighter">-₹{pricingResult.discountAmount.toLocaleString()}</span>
                                     </div>
                                   )}
                                 </div>
 
-                                <div className="border-t border-dashed border-gray-300 pt-3 flex justify-between items-center">
-                                  <span className="text-base font-bold text-gray-900">Final Total</span>
-                                  <span className="text-xl font-bold text-[#88651E]">₹{pricingResult.finalPrice}</span>
+                                <div className="border-t border-dashed border-gray-200 pt-4 flex justify-between items-end">
+                                  <div>
+                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Estimated Total</p>
+                                    <p className="text-2xl font-black text-gray-900 tracking-tighter">₹{pricingResult.finalPrice.toLocaleString()}</p>
+                                  </div>
+                                  {pricingResult.discountAmount > 0 && (
+                                    <div className="text-right">
+                                      <p className="text-[10px] font-black text-green-600 uppercase tracking-widest bg-green-100 px-2 py-1 rounded-full inline-block">
+                                        Saved ₹{pricingResult.discountAmount.toLocaleString()}
+                                      </p>
+                                    </div>
+                                  )}
                                 </div>
                               </div>
                             );

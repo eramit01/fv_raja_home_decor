@@ -7,7 +7,6 @@ import { BannerSlider } from '../components/BannerSlider';
 import { categoryService, Category } from '../services/category.service';
 import { CategoryProductSection } from '../components/CategoryProductSection';
 import { BestSellingSection } from '../components/BestSellingSection';
-import { TrustStrip } from '../components/TrustStrip';
 import { WhyChooseUs } from '../components/WhyChooseUs';
 import { BulkCTASection } from '../components/BulkCTASection';
 import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
@@ -114,9 +113,6 @@ export const HomePage = () => {
         {/* Banner Skeleton */}
         <div className="w-full mt-2 aspect-[16/4] bg-gray-200 animate-pulse"></div>
 
-        {/* Trust Strip Skeleton */}
-        <div className="h-20 bg-gray-200 w-full animate-pulse mt-4"></div>
-
         <div className="container mx-auto px-4 mt-8">
           {/* Best Selling Skeleton */}
           <div className="h-8 w-48 bg-gray-200 animate-pulse mb-6"></div>
@@ -139,9 +135,6 @@ export const HomePage = () => {
       <div className="w-full mt-2">
         <BannerSlider banners={banners} />
       </div>
-
-      {/* Trust Strip Section */}
-      <TrustStrip />
 
       <div className="container mx-auto px-4">
         {/* Best Selling Section */}

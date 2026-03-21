@@ -54,29 +54,25 @@ export const PackSelector = ({
     };
 
     return (
-        <div className="space-y-2.5">
-            <div className="space-y-2">
-                <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider">Select Pack</h3>
+        <div className="mb-5">
+            <div className="mb-5">
+                <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Select Pack</h3>
 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-2 sm:gap-2.5">
                     {packs.map((pack: Pack, index: number) => {
                         // Use _id if available, fallback to label (legacy)
                         const packId = pack._id || pack.label;
                         const packPrice = calculatePackPrice(pack);
                         const isSelected = selectedPackId === packId;
 
-                        // Calculate Comparison Price (MRP)
-                        // Priority: Unit MRP * Quantity > Unit Selling * Quantity
                         const unitMrp = baseOriginalPrice && baseOriginalPrice > basePrice ? baseOriginalPrice : basePrice;
                         const packMrp = unitMrp * pack.quantity;
 
-                        // Calculate Discount
                         let discountPercent = 0;
                         if (packMrp > packPrice) {
                             discountPercent = Math.round(((packMrp - packPrice) / packMrp) * 100);
                         }
 
-                        // Smart Label: If label is just "Pack of", append quantity
                         let displayLabel = pack.label;
                         if (displayLabel.trim().toLowerCase() === 'pack of') {
                             displayLabel = `Pack of ${pack.quantity}`;
@@ -86,24 +82,26 @@ export const PackSelector = ({
                             <button
                                 key={packId}
                                 onClick={() => onSelectPack(isSelected ? null : packId)}
-                                className={`flex flex-col items-center justify-center px-4 py-2 rounded-xl border-2 transition-all min-w-[110px] text-center relative ${isSelected
-                                    ? 'border-accent bg-accent-soft text-text-gold font-bold ring-1 ring-accent'
-                                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                                    }`}
+                                className={`group relative flex flex-col items-center justify-center px-4 py-2 rounded-lg border transition-all duration-200 min-w-[100px] sm:min-w-[120px] ${isSelected
+                                    ? 'border-black bg-black text-white z-10'
+                                    : 'border-gray-200 bg-white text-gray-600 hover:border-black hover:bg-gray-50'
+                                    } cursor-pointer`}
                             >
-                                {/* Discount Badge */}
+                                {/* Subtle Discount Tag */}
                                 {discountPercent > 0 && (
-                                    <div className={`absolute -top-3 left-1/2 -translate-x-1/2 text-[10px] font-bold px-2 py-0.5 rounded-full whitespace-nowrap shadow-sm ${isSelected ? 'bg-accent text-white' : 'bg-green-100 text-green-700'}`}>
+                                    <div className={`absolute -top-2 left-1/2 -translate-x-1/2 text-[8px] font-black px-1.5 py-0.5 rounded-full whitespace-nowrap shadow-sm tracking-tighter transition-colors ${isSelected ? 'bg-white text-black border border-gray-100' : 'bg-green-600 text-white'}`}>
                                         {discountPercent}% OFF
                                     </div>
                                 )}
 
-                                <div className="text-sm font-bold whitespace-nowrap mt-1">{displayLabel}</div>
+                                <div className="text-[10px] font-black uppercase tracking-tight truncate w-full px-1">{displayLabel}</div>
 
-                                <div className="flex flex-col items-center mt-0.5 leading-tight">
-                                    <span className="text-sm font-bold">₹{Math.round(packPrice).toLocaleString('en-IN')}</span>
+                                <div className="flex items-baseline gap-1.5 mt-0.5">
+                                    <span className="text-xs font-black">₹{Math.round(packPrice).toLocaleString('en-IN')}</span>
                                     {discountPercent > 0 && (
-                                        <span className="text-[10px] text-gray-400 line-through">₹{Math.round(packMrp).toLocaleString('en-IN')}</span>
+                                        <span className={`text-[9px] line-through font-medium ${isSelected ? 'text-gray-400' : 'text-gray-400'}`}>
+                                            ₹{Math.round(packMrp).toLocaleString('en-IN')}
+                                        </span>
                                     )}
                                 </div>
                             </button>
@@ -112,18 +110,18 @@ export const PackSelector = ({
                 </div>
             </div>
 
-            {/* Fragrance Selector */}
+            {/* Fragrance Selector (Legacy/Context) */}
             {fragrances.length > 0 && (
-                <div className="space-y-3 pt-2">
-                    <h3 className="text-base font-semibold text-gray-900">Choose Fragrance</h3>
-                    <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
+                <div className="mb-5">
+                    <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Choose Fragrance</h3>
+                    <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 gap-2">
                         {fragrances.map((fragrance: string, index: number) => (
                             <button
                                 key={index}
                                 onClick={() => onSelectFragrance(fragrance)}
-                                className={`flex-shrink-0 px-4 py-2 rounded-lg border transition-all ${selectedFragrance === fragrance
-                                    ? 'border-accent bg-accent-soft text-text-gold font-medium'
-                                    : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                                className={`px-2 py-2 rounded-lg border text-[10px] font-bold uppercase transition-all duration-200 tracking-wider truncate px-1 text-center ${selectedFragrance === fragrance
+                                    ? 'border-black bg-black text-white shadow-md'
+                                    : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:shadow-sm'
                                     }`}
                             >
                                 {fragrance}

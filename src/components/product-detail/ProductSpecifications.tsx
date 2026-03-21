@@ -53,7 +53,7 @@ export const ProductSpecifications: React.FC<ProductSpecificationsProps> = ({ pr
 
     return (
         <div className="border-t border-gray-100 pt-6 mt-6">
-            <h3 className="text-base font-bold text-gray-900 uppercase tracking-wider mb-4">Specifications</h3>
+            <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest mb-4">Specifications</h3>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-y-3 gap-x-8">
                 {specs.map((spec, index) => (

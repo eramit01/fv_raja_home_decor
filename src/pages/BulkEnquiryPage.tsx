@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FiCheck, FiPackage, FiTruck, FiPenTool } from 'react-icons/fi';
+import { FaWhatsapp } from 'react-icons/fa';
 import { api } from '../services/api';
 
 export const BulkEnquiryPage = () => {
@@ -61,64 +61,6 @@ export const BulkEnquiryPage = () => {
                 </div>
             </div>
 
-            {/* About Us / Trust Section */}
-            <div className="bg-white py-16 border-b border-gray-100">
-                <div className="container mx-auto px-4 text-center max-w-4xl">
-                    <span className="text-primary-600 font-bold tracking-wider uppercase text-sm mb-2 block">Why Choose Us?</span>
-                    <h2 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">India's Leading Factory-Direct Glassware Manufacturer</h2>
-                    <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                        We are a premier manufacturer and supplier of high-quality glassware, candle jars, and home decor items.
-                        With our own state-of-the-art manufacturing facility, we cut out the middlemen to bring you
-                        <strong> unbeatable factory prices</strong> without compromising on quality.
-                    </p>
-                    <div className="grid grid-cols-2 md:grid-cols-4 gap-6 text-left mt-12">
-                        <div className="p-4 bg-gray-50 rounded-lg">
-                            <div className="text-3xl font-bold text-gray-900 mb-1">10+</div>
-                            <div className="text-sm text-gray-600">Years of Experience</div>
-                        </div>
-                        <div className="p-4 bg-gray-50 rounded-lg">
-                            <div className="text-3xl font-bold text-gray-900 mb-1">500+</div>
-                            <div className="text-sm text-gray-600">Product Designs</div>
-                        </div>
-                        <div className="p-4 bg-gray-50 rounded-lg">
-                            <div className="text-3xl font-bold text-gray-900 mb-1">10k+</div>
-                            <div className="text-sm text-gray-600">Happy Clients</div>
-                        </div>
-                        <div className="p-4 bg-gray-50 rounded-lg">
-                            <div className="text-3xl font-bold text-gray-900 mb-1">24h</div>
-                            <div className="text-sm text-gray-600">Dispatch Ready</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            {/* Value Propositions */}
-            <div className="py-16 bg-gray-50">
-                <div className="container mx-auto px-4">
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                        <FeatureCard
-                            icon={FiPackage}
-                            title="Factory Prices"
-                            description="Direct from manufacturer pricing with no middleman markup."
-                        />
-                        <FeatureCard
-                            icon={FiPenTool}
-                            title="Customization"
-                            description="Logo printing, custom packaging, and bespoke designs available."
-                        />
-                        <FeatureCard
-                            icon={FiCheck}
-                            title="Huge Selection"
-                            description="Choose from over 500+ premium SKUs in glass and decor."
-                        />
-                        <FeatureCard
-                            icon={FiTruck}
-                            title="Fast Shipping"
-                            description="Reliable pan-India logistic network for safe & timely delivery."
-                        />
-                    </div>
-                </div>
-            </div>
 
             {/* Content & Form Section */}
             <div className="container mx-auto px-4 py-16" id="enquiry-form">
@@ -149,14 +91,24 @@ export const BulkEnquiryPage = () => {
                             />
                         </div>
 
-                        <div className="mt-12 p-6 bg-blue-50 rounded-xl border border-blue-100">
-                            <h3 className="font-bold text-blue-900 mb-2">Need something simpler?</h3>
-                            <p className="text-blue-800 text-sm mb-4">
-                                Direct WhatsApp us for quick catalog and pricing.
-                            </p>
-                            <button className="text-primary-600 font-bold hover:underline">
-                                Chat on WhatsApp &rarr;
-                            </button>
+                        <div className="mt-12 p-6 bg-green-50 rounded-xl border border-green-100 flex flex-col sm:flex-row items-center gap-6">
+                            <div className="bg-green-500 text-white p-4 rounded-full shadow-lg grow-0 shrink-0">
+                                <FaWhatsapp size={32} />
+                            </div>
+                            <div>
+                                <h3 className="font-black text-green-900 mb-1 uppercase tracking-tight">Prefer WhatsApp?</h3>
+                                <p className="text-green-800 text-[13px] mb-3 leading-snug">
+                                    Get instant catalog and bulk pricing directly on your phone.
+                                </p>
+                                <a
+                                    href="https://wa.me/918477876625"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
+                                >
+                                    Chat Now
+                                </a>
+                            </div>
                         </div>
                     </div>
 
@@ -262,15 +214,6 @@ export const BulkEnquiryPage = () => {
     );
 };
 
-const FeatureCard = ({ icon: Icon, title, description }: { icon: any, title: string, description: string }) => (
-    <div className="bg-white p-6 rounded-xl border border-gray-100 hover:shadow-md transition-shadow">
-        <div className="w-12 h-12 bg-primary-50 text-primary-600 rounded-lg flex items-center justify-center mb-4">
-            <Icon size={24} />
-        </div>
-        <h3 className="text-lg font-bold text-gray-900 mb-2">{title}</h3>
-        <p className="text-sm text-gray-600 leading-relaxed">{description}</p>
-    </div>
-);
 
 const ProcessStep = ({ step, title, description }: { step: string, title: string, description: string }) => (
     <div className="flex gap-4">

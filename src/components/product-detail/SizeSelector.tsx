@@ -6,23 +6,26 @@ interface SizeSelectorProps {
 
 export const SizeSelector = ({ sizes, selectedSize, onSelectSize }: SizeSelectorProps) => {
     return (
-        <div className="space-y-2">
-            <h3 className="text-base font-semibold text-gray-900">Select Size</h3>
+        <div className="mb-5">
+            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Select Size</h3>
 
-            <div className="flex gap-2 overflow-x-auto scrollbar-hide pb-2">
-                {sizes.map((size, index) => (
-                    <button
-                        key={index}
-                        onClick={() => onSelectSize(selectedSize?.name === size.name ? null : size)}
-                        className={`flex-shrink-0 px-4 py-3 rounded-xl border-2 transition-all ${selectedSize?.name === size.name
-                            ? 'border-accent bg-accent-soft text-text-gold font-semibold ring-1 ring-accent'
-                            : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                            }`}
-                    >
-                        <div className="text-sm font-medium">{size.name}</div>
-                        <div className="text-xs mt-0.5">₹{size.price.toLocaleString('en-IN')}</div>
-                    </button>
-                ))}
+            <div className="flex flex-wrap gap-2 sm:gap-2.5">
+                {sizes.map((size, index) => {
+                    const isSelected = selectedSize?.name === size.name;
+                    return (
+                        <button
+                            key={index}
+                            onClick={() => onSelectSize(isSelected ? null : size)}
+                            className={`group relative flex flex-col items-center justify-center px-4 py-2 rounded-lg border transition-all duration-200 min-w-[80px] sm:min-w-[100px] ${isSelected
+                                ? 'border-black bg-black text-white z-10'
+                                : 'border-gray-200 bg-white text-gray-600 hover:border-black hover:bg-gray-50'
+                                } cursor-pointer`}
+                        >
+                            <div className="text-[10px] font-black uppercase tracking-tight truncate w-full px-1">{size.name}</div>
+                            <div className="text-xs font-black mt-0.5">₹{size.price.toLocaleString('en-IN')}</div>
+                        </button>
+                    );
+                })}
             </div>
         </div>
     );

@@ -13,7 +13,7 @@ export const ProductDescription = ({
 }: ProductDescriptionProps) => {
     return (
         <div className="space-y-3">
-            <h3 className="text-base font-semibold text-gray-900">Product Details</h3>
+            <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">Product Details</h3>
 
             <div className="text-sm text-gray-700 leading-relaxed">
                 {showFull ? (

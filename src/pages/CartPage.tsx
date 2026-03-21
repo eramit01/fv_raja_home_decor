@@ -110,30 +110,60 @@ export const CartPage = () => {
                 {item.breakdown ? (
                   <>
                     {item.breakdown.multiplier > 1 && (
-                      <span className="inline-block bg-green-100 text-green-800 text-xs px-2 py-0.5 rounded font-bold mr-2">
+                      <span className="inline-block bg-green-100 text-green-800 text-[10px] px-2 py-0.5 rounded font-black uppercase tracking-widest mr-2 border border-green-200/50">
                         Pack of {item.breakdown.multiplier}
                       </span>
                     )}
                     {item.breakdown.attributes.map((attr) => (
-                      <div key={attr.key} className="text-sm text-gray-600 flex gap-1">
-                        <span className="font-medium text-gray-800">{attr.key}:</span> {attr.value}
+                      <div key={attr.key} className="text-xs text-gray-600 flex gap-1">
+                        <span className="font-bold text-gray-800">{attr.key}:</span> {attr.value}
                       </div>
                     ))}
                     {item.breakdown.addOns.length > 0 && (
-                      <div className="text-sm text-purple-700 flex gap-1 flex-wrap mt-1">
-                        <span className="font-medium">Extras:</span>
+                      <div className="text-[11px] text-purple-700 flex gap-1 flex-wrap mt-1">
+                        <span className="font-black uppercase tracking-wider text-[10px]">Extras:</span>
                         {item.breakdown.addOns.map((addon, i) => (
-                          <span key={i} className="bg-purple-50 px-1.5 rounded">{addon}</span>
+                          <span key={i} className="bg-purple-50 px-1.5 rounded border border-purple-100/50">{addon}</span>
                         ))}
                       </div>
                     )}
                   </>
                 ) : (
-                  item.selectedAttributes && Object.entries(item.selectedAttributes).map(([key, value]) => (
-                    <div key={key} className="text-sm text-gray-600 flex gap-1">
-                      <span className="font-medium">{key}:</span> {value}
+                  item.selectedAttributes && !Array.isArray(item.selectedAttributes) && typeof item.selectedAttributes === 'object' && Object.entries(item.selectedAttributes).map(([key, value]) => (
+                    <div key={key} className="text-xs text-gray-600 flex gap-1">
+                      <span className="font-bold">{key}:</span> {typeof value === 'object' ? JSON.stringify(value) : String(value)}
                     </div>
                   ))
+                )}
+                {item.selectedAttributes && Array.isArray(item.selectedAttributes) && item.selectedAttributes.map((attr, idx) => (
+                  <div key={idx}>
+                    {typeof attr === 'object' ? (
+                      Object.entries(attr).map(([k, v]) => (
+                        <div key={k} className="text-xs text-gray-600 flex gap-1">
+                          <span className="font-bold">{k}:</span> {String(v)}
+                        </div>
+                      ))
+                    ) : (
+                      <div className="text-xs text-gray-600">{String(attr)}</div>
+                    )}
+                  </div>
+                ))}
+                {/* Customizations outside of breakdown */}
+                {item.fragrance && (
+                  <div className="text-[11px] text-blue-700 flex gap-1 mt-1 bg-blue-50/50 w-fit px-2 py-0.5 rounded border border-blue-100/50">
+                    <span className="font-bold">Fragrance:</span> {item.fragrance}
+                  </div>
+                )}
+                {item.fragrances && item.fragrances.length > 0 && (
+                  <div className="text-[10px] text-blue-800 bg-blue-50 px-2 py-1 rounded border border-blue-100 mt-1">
+                    <span className="font-black uppercase">Mist Options:</span> {item.fragrances.join(', ')}
+                  </div>
+                )}
+                {item.giftCustomization?.active && (
+                  <div className="mt-2 p-2 bg-[#FAF7F2] rounded-lg border border-[#E5D5C1] border-dashed">
+                    <p className="text-[9px] font-black text-[#8B4513] uppercase tracking-widest mb-0.5">Gift Personalization</p>
+                    <p className="text-[10px] font-bold text-gray-800 truncate">{item.giftCustomization.occasion}: {item.giftCustomization.message}</p>
+                  </div>
                 )}
               </div>
 

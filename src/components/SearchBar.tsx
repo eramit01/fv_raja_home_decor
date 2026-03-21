@@ -61,7 +61,7 @@ export const SearchBar = () => {
     const handleSearch = (e: React.FormEvent) => {
         e.preventDefault();
         if (query.trim()) {
-            navigate(`/products?search=${encodeURIComponent(query)}`);
+            navigate(`/products?q=${encodeURIComponent(query)}`);
             setIsOpen(false);
             setQuery('');
         }
@@ -86,10 +86,10 @@ export const SearchBar = () => {
                     type="text"
                     value={query}
                     onChange={(e) => setQuery(e.target.value)}
-                    placeholder="Search for products..."
-                    className="w-full px-4 py-2 pl-10 pr-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-accent/30 focus:border-accent transition-all"
+                    placeholder="Search for items, brands and more..."
+                    className="w-full px-4 py-2.5 pl-10 pr-10 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-black/5 focus:border-black transition-all bg-gray-50/50 placeholder:text-gray-400 text-sm font-medium"
                 />
-                <FiSearch className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+                <FiSearch className="absolute left-3.5 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 {query && (
                     <button
                         type="button"

@@ -24,34 +24,34 @@ export const FragranceSelector = ({
 }: FragranceSelectorProps) => {
 
     return (
-        <div className="bg-white px-4 py-4 mb-2 border-t border-gray-100">
-            <div className="mb-3">
-                <h3 className="text-sm font-semibold text-gray-900">Choose Fragrances</h3>
-                <p className="text-xs text-gray-500 mt-1">Customize your pack (Same or different)</p>
+        <div className="mb-5 border-t border-gray-100 pt-4">
+            <div className="mb-3 ml-0.5">
+                <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em]">Choose Fragrances</h3>
+                <p className="text-[10px] text-gray-400 mt-0.5 font-medium uppercase tracking-tight">Customize your pack (Same or different)</p>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
                 {Array.from({ length: candleCount }).map((_, index) => {
                     const selectedId = selectedFragrances[index];
                     const selectedOption = fragranceOptions.find(f => f.id === selectedId) || fragranceOptions[0];
 
                     return (
-                        <div key={index} className="flex items-center justify-between">
-                            <span className="text-sm text-gray-700 font-medium">Candle {index + 1}</span>
-                            <div className="w-40 relative">
+                        <div key={index} className="flex items-center justify-between bg-gray-50/50 p-2 rounded-lg border border-gray-100">
+                            <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider ml-1">Candle {index + 1}</span>
+                            <div className="w-32 sm:w-40 relative">
                                 <Listbox value={selectedId} onChange={(val) => onFragranceChange(index, val)}>
-                                    <div className="relative mt-1">
-                                        <Listbox.Button className="relative w-full cursor-pointer rounded-lg bg-gray-50 py-2 pl-3 pr-10 text-left border border-gray-200 focus:outline-none focus:border-yellow-500 sm:text-sm">
-                                            <span className="flex items-center truncate">
+                                    <div className="relative">
+                                        <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-2.5 pr-8 text-left border border-gray-200 focus:outline-none focus:border-black sm:text-[12px] text-[11px] font-bold">
+                                            <span className="flex items-center truncate uppercase tracking-tight">
                                                 <span
-                                                    className="h-3 w-3 rounded-full mr-2"
+                                                    className="h-2.5 w-2.5 rounded-full mr-2 shadow-sm"
                                                     style={{ backgroundColor: selectedOption.color }}
                                                 />
                                                 <span className="block truncate">{selectedOption.name}</span>
                                             </span>
                                             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-2">
                                                 <FiChevronDown
-                                                    className="h-4 w-4 text-gray-400"
+                                                    className="h-3.5 w-3.5 text-gray-400"
                                                     aria-hidden="true"
                                                 />
                                             </span>
@@ -62,12 +62,12 @@ export const FragranceSelector = ({
                                             leaveFrom="opacity-100"
                                             leaveTo="opacity-0"
                                         >
-                                            <Listbox.Options className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm">
+                                            <Listbox.Options className="absolute z-30 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-[12px] shadow-lg ring-1 ring-black/5 focus:outline-none">
                                                 {fragranceOptions.map((fragrance) => (
                                                     <Listbox.Option
                                                         key={fragrance.id}
                                                         className={({ active }) =>
-                                                            `relative cursor-default select-none py-2 pl-10 pr-4 ${active ? 'bg-yellow-50 text-yellow-900' : 'text-gray-900'
+                                                            `relative cursor-default select-none py-2 pl-8 pr-4 ${active ? 'bg-gray-100 text-black' : 'text-gray-900'
                                                             }`
                                                         }
                                                         value={fragrance.id}
@@ -75,17 +75,17 @@ export const FragranceSelector = ({
                                                         {({ selected }) => (
                                                             <>
                                                                 <span
-                                                                    className={`flex items-center truncate ${selected ? 'font-medium' : 'font-normal'
+                                                                    className={`flex items-center truncate uppercase tracking-tight ${selected ? 'font-black' : 'font-bold'
                                                                         }`}
                                                                 >
                                                                     <span
-                                                                        className="h-3 w-3 rounded-full mr-2"
+                                                                        className="h-2.5 w-2.5 rounded-full mr-2 shadow-sm"
                                                                         style={{ backgroundColor: fragrance.color }}
                                                                     />
                                                                     {fragrance.name}
                                                                 </span>
                                                                 {selected ? (
-                                                                    <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-yellow-600">
+                                                                    <span className="absolute inset-y-0 left-0 flex items-center pl-2 text-black">
                                                                         <FiCheck className="h-4 w-4" aria-hidden="true" />
                                                                     </span>
                                                                 ) : null}

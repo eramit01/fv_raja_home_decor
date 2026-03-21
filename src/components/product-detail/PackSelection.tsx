@@ -32,43 +32,28 @@ export const PackSelection = ({ packs, selectedPackId, onSelectPack }: PackSelec
                             key={pack.id}
                             onClick={() => onSelectPack(isSelected ? null : pack.id)}
                             className={`
-                relative flex items-center justify-between p-2 rounded-lg border transition-all cursor-pointer select-none
-                ${isSelected
-                                    ? 'border-yellow-500 bg-yellow-50'
-                                    : 'border-gray-200 bg-white hover:border-gray-300'
+                                flex flex-col items-center justify-center px-3 py-1.5 rounded-lg border-2 transition-all cursor-pointer select-none relative min-w-[90px] text-center
+                                ${isSelected
+                                    ? 'border-gray-900 bg-gray-50 text-gray-900 font-bold'
+                                    : 'border-gray-100 bg-white text-gray-400 hover:border-gray-300'
                                 }
-                flex-1 min-w-[120px] max-w-[48%]
-              `}
+                            `}
                         >
-                            <div className="flex flex-col">
-                                <span className={`text-xs font-semibold ${isSelected ? 'text-gray-900' : 'text-gray-700'}`}>
-                                    {pack.label}
-                                </span>
-                                {pack.subText && (
-                                    <span className="text-[9px] text-gray-500 leading-none mt-0.5">{pack.subText}</span>
-                                )}
-                            </div>
-
-                            <div className="flex flex-col items-end ml-2">
-                                <div className="flex items-baseline gap-1">
-                                    <span className="text-sm font-bold text-gray-900">₹{pack.price}</span>
-                                </div>
-                                {pack.originalPrice && (
-                                    <span className="text-[9px] text-gray-400 line-through leading-none">₹{pack.originalPrice}</span>
-                                )}
-                            </div>
-
-                            {/* Simplified Badge - Dot indicator if selected */}
-                            {isSelected && (
-                                <div className="absolute -top-1 -right-1 w-3 h-3 bg-yellow-500 rounded-full border-2 border-white"></div>
-                            )}
-
-                            {/* Save badge as small text tag */}
-                            {pack.saveBadge && !isSelected && (
-                                <div className="absolute -top-2 left-2 bg-green-100 text-green-700 text-[8px] font-bold px-1.5 rounded-sm border border-green-200">
+                            {/* Subtle Discount Tag */}
+                            {pack.saveBadge && (
+                                <div className={`absolute -top-2 left-1/2 -translate-x-1/2 text-[9px] font-bold px-1.5 py-0.5 rounded-full whitespace-nowrap shadow-sm ${isSelected ? 'bg-accent text-white' : 'bg-green-100 text-green-700'}`}>
                                     {pack.saveBadge}
                                 </div>
                             )}
+
+                            <div className="text-xs font-bold whitespace-nowrap mt-0.5">{pack.label}</div>
+
+                            <div className="flex flex-col items-center leading-none mt-0.5">
+                                <span className="text-[13px] font-bold">₹{pack.price}</span>
+                                {pack.originalPrice && (
+                                    <span className="text-[9px] text-gray-400 line-through mt-0.5 leading-none">₹{pack.originalPrice}</span>
+                                )}
+                            </div>
                         </div>
                     );
                 })}

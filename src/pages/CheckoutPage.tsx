@@ -558,7 +558,7 @@ export const CheckoutPage = () => {
                     <span>₹{shippingCharges}</span>
                   )}
                 </div>
-                <div className="flex justify-between text-lg font-extrabold text-gray-900 pt-3 border-t border-dashed">
+                <div className="flex justify-between text-base font-bold text-gray-900 pt-3 border-t border-dashed">
                   <span>Total</span>
                   <span>₹{finalTotal.toLocaleString()}</span>
                 </div>

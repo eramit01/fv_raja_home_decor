@@ -15,20 +15,12 @@ export const Header = () => {
   const { isAuthenticated, user } = useSelector((state: RootState) => state.auth);
   const { wishlistCount } = useWishlist();
   const navigate = useNavigate();
-  const [mobileSearchQuery, setMobileSearchQuery] = useState('');
 
   const dispatch = useDispatch();
   const [showUserMenu, setShowUserMenu] = useState(false);
 
   const cartItemCount = items.reduce((sum, item) => sum + item.quantity, 0);
 
-  const handleSearch = (e: React.FormEvent, query: string) => {
-    e.preventDefault();
-    if (query.trim()) {
-      navigate(`/category/search?q=${encodeURIComponent(query)}`);
-      setMobileSearchQuery(''); // Clear mobile search after submit
-    }
-  };
 
   const handleLogout = async () => {
     try {
@@ -47,32 +39,26 @@ export const Header = () => {
     <header className="bg-white shadow-sm sticky top-0 z-50">
       <div className="container mx-auto px-4">
         {/* Mobile Layout */}
-        <div className="md:hidden py-4">
-          <div className="flex items-center justify-between mb-4">
-            <Link to="/" className="flex items-center group">
-              <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-16 w-auto object-contain" />
+        <div className="md:hidden py-3">
+          <div className="flex items-center justify-between gap-4 mb-3.5 px-0.5">
+            <Link to="/" className="flex items-center group -ml-1">
+              <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-12 w-auto object-contain drop-shadow-sm transition-transform active:scale-95" />
             </Link>
 
             {/* Bulk Inquiry Button */}
             <button
               onClick={() => navigate('/bulk-enquiry')}
-              className="bg-accent hover:bg-accent-hover text-white px-3 py-1.5 rounded-full text-xs font-bold transition-all shadow-md active:scale-95"
+              className="bg-accent hover:bg-accent-hover text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center gap-1.5 border border-white/20 whitespace-nowrap flex-shrink-0"
             >
-              Bulk Order
+              <FiShoppingBag className="w-3.5 h-3.5" />
+              <span>Bulk Enquiry</span>
             </button>
           </div>
 
           {/* Search Bar */}
-          <form onSubmit={(e) => handleSearch(e, mobileSearchQuery)} className="relative">
-            <FiSearch className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
-            <input
-              type="text"
-              value={mobileSearchQuery}
-              onChange={(e) => setMobileSearchQuery(e.target.value)}
-              placeholder="Search for products..."
-              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-100 focus:border-primary-700 text-sm bg-gray-50 transition-all placeholder:text-gray-400"
-            />
-          </form>
+          <div className="relative">
+            <SearchBar />
+          </div>
         </div>
 
         {/* Desktop Layout */}

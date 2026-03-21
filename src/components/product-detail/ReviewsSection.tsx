@@ -6,7 +6,8 @@ import { ReviewSkeleton } from '../skeletons/ReviewSkeleton';
 
 interface Review {
     _id: string;
-    user: { name: string };
+    user?: { name: string };
+    manualName?: string;
     rating: number;
     comment: string;
     images?: string[];
@@ -80,7 +81,7 @@ export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
                             >
                                 <div className="flex items-center justify-between mb-2">
                                     <span className="font-medium text-gray-900">
-                                        {review.user?.name || 'Anonymous'}
+                                        {review.manualName || review.user?.name || 'Anonymous'}
                                     </span>
                                     <div className="flex items-center gap-1 text-yellow-500">
                                         {[...Array(5)].map((_, i) => (
