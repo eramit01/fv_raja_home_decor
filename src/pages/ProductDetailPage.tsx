@@ -541,16 +541,16 @@ const ProductDetailPage = () => {
                           })()}
 
                           {hasFragranceStandalone && (
-                            <div className="space-y-3 pt-1.5">
-                              <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">Choose Fragrance</h3>
-                              <div className="flex flex-wrap gap-2">
+                            <div className="space-y-2 pt-1">
+                              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-2 ml-0.5">Choose Fragrance</h3>
+                              <div className="flex flex-wrap gap-1.5">
                                 {(product.fragrances || []).map((fragrance: string, index: number) => (
                                   <button
                                     key={index}
                                     onClick={() => setSelectedFragrance(fragrance)}
-                                    className={`px-4 py-2 rounded-lg border transition-all ${selectedFragrance === fragrance
-                                      ? 'border-primary-600 bg-primary-50 text-primary-700 font-medium ring-1 ring-primary-600'
-                                      : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                                    className={`px-1.5 py-0.5 text-[12px] font-bold rounded border transition-all ${selectedFragrance === fragrance
+                                      ? 'border-black bg-black text-white shadow-sm'
+                                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400'
                                       }`}
                                   >
                                     {fragrance}

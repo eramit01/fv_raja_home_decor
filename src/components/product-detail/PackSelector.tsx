@@ -82,24 +82,24 @@ export const PackSelector = ({
                             <button
                                 key={packId}
                                 onClick={() => onSelectPack(isSelected ? null : packId)}
-                                className={`group relative flex flex-col items-center justify-center px-4 py-2 rounded-lg border transition-all duration-200 min-w-[100px] sm:min-w-[120px] ${isSelected
-                                    ? 'border-black bg-black text-white z-10'
+                                className={`group relative flex flex-col items-center justify-center px-2.5 py-1.5 rounded-md border transition-all duration-200 ${isSelected
+                                    ? 'border-black bg-black text-white z-10 shadow-sm'
                                     : 'border-gray-200 bg-white text-gray-600 hover:border-black hover:bg-gray-50'
-                                    } cursor-pointer`}
+                                    } cursor-pointer mt-1`}
                             >
                                 {/* Subtle Discount Tag */}
                                 {discountPercent > 0 && (
-                                    <div className={`absolute -top-2 left-1/2 -translate-x-1/2 text-[8px] font-black px-1.5 py-0.5 rounded-full whitespace-nowrap shadow-sm tracking-tighter transition-colors ${isSelected ? 'bg-white text-black border border-gray-100' : 'bg-green-600 text-white'}`}>
+                                    <div className={`absolute -top-2.5 left-1/2 -translate-x-1/2 text-[9px] font-black px-1 py-0 rounded whitespace-nowrap shadow-sm tracking-tight transition-colors ${isSelected ? 'bg-white text-black border border-gray-100' : 'bg-green-600 text-white'}`}>
                                         {discountPercent}% OFF
                                     </div>
                                 )}
 
-                                <div className="text-[10px] font-black uppercase tracking-tight truncate w-full px-1">{displayLabel}</div>
+                                <div className="text-[12px] sm:text-[13px] font-black uppercase tracking-tight truncate w-full text-center leading-none mt-0.5">{displayLabel}</div>
 
-                                <div className="flex items-baseline gap-1.5 mt-0.5">
-                                    <span className="text-xs font-black">₹{Math.round(packPrice).toLocaleString('en-IN')}</span>
+                                <div className="flex items-baseline justify-center gap-1 mt-1">
+                                    <span className="text-[14px] font-black leading-none">₹{Math.round(packPrice).toLocaleString('en-IN')}</span>
                                     {discountPercent > 0 && (
-                                        <span className={`text-[9px] line-through font-medium ${isSelected ? 'text-gray-400' : 'text-gray-400'}`}>
+                                        <span className={`text-[10px] line-through font-bold leading-none ${isSelected ? 'text-gray-300' : 'text-gray-400'}`}>
                                             ₹{Math.round(packMrp).toLocaleString('en-IN')}
                                         </span>
                                     )}

@@ -36,12 +36,12 @@ export const FragranceSelector = ({
                     const selectedOption = fragranceOptions.find(f => f.id === selectedId) || fragranceOptions[0];
 
                     return (
-                        <div key={index} className="flex items-center justify-between bg-gray-50/50 p-2 rounded-lg border border-gray-100">
-                            <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider ml-1">Candle {index + 1}</span>
-                            <div className="w-32 sm:w-40 relative">
+                        <div key={index} className="flex items-center gap-2 bg-gray-50/50 py-1.5 px-2.5 rounded-md border border-gray-100">
+                            <span className="text-[11px] text-gray-500 font-bold uppercase tracking-wider w-[70px]">Candle {index + 1}</span>
+                            <div className="flex-1 relative">
                                 <Listbox value={selectedId} onChange={(val) => onFragranceChange(index, val)}>
                                     <div className="relative">
-                                        <Listbox.Button className="relative w-full cursor-pointer rounded-md bg-white py-1.5 pl-2.5 pr-8 text-left border border-gray-200 focus:outline-none focus:border-black sm:text-[12px] text-[11px] font-bold">
+                                        <Listbox.Button className="relative w-full cursor-pointer rounded bg-white py-1.5 pl-2.5 pr-8 text-left border border-gray-200 focus:outline-none focus:border-black sm:text-[12px] text-[11px] font-bold">
                                             <span className="flex items-center truncate uppercase tracking-tight">
                                                 <span
                                                     className="h-2.5 w-2.5 rounded-full mr-2 shadow-sm"

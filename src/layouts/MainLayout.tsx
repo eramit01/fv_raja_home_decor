@@ -37,6 +37,7 @@ export const MainLayout = () => {
 
   // Hide category section and bottom nav on specific pages
   const isCheckoutPage = location.pathname === '/checkout';
+  const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
   // Routes where CategorySection should be hidden
   const hiddenCategoryRoutes = ['/profile', '/orders', '/wishlist', '/bulk-enquiry', '/login', '/about'];
@@ -74,13 +75,17 @@ export const MainLayout = () => {
       <main>
         <Outlet />
       </main>
-      {/* Footer - Hide on checkout, show elsewhere */}
-      {!isCheckoutPage && <Footer />}
+
+      {/* Footer - Hide on checkout entirely, hide on mobile for auth pages */}
+      {!isCheckoutPage && (
+        <div className={isAuthPage ? "hidden md:block" : ""}>
+          <Footer />
+        </div>
+      )}
 
       {/* Mobile bottom navigation */}
       {showBottomNav && <BottomNav />}
 
-      {/* Floating WhatsApp Button - Removed */}
       {/* <WhatsAppButton /> */}
 
       {/* Global Cart Drawer */}

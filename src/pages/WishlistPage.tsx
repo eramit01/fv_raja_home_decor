@@ -3,12 +3,16 @@ import { useWishlist } from '../context/WishlistContext';
 import { useNavigate } from 'react-router-dom';
 import { FiTrash2, FiShoppingCart, FiHeart } from 'react-icons/fi';
 import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
+import { useDispatch } from 'react-redux';
+import { addToCart, openCart } from '../store/slices/cartSlice';
 
 
 export const WishlistPage = () => {
     const { wishlist, wishlistCount, removeFromWishlist, clearWishlist, isLoading } = useWishlist();
     const navigate = useNavigate();
     const [removingId, setRemovingId] = useState<string | null>(null);
+
+    const dispatch = useDispatch();
 
     const handleRemove = async (productId: string) => {
         setRemovingId(productId);
@@ -23,13 +27,18 @@ export const WishlistPage = () => {
 
     const handleMoveToCart = async (item: any) => {
         try {
-            // Add to cart using Redux action
-            window.dispatchEvent(new CustomEvent('addToCart', {
-                detail: {
-                    product: item.product,
-                    quantity: 1
-                }
-            }));
+            const cartItem = {
+                productId: item.product._id || item.product.id,
+                name: item.product.name || item.product.title,
+                image: item.product.images[0],
+                price: item.product.price,
+                originalPrice: item.product.originalPrice,
+                quantity: 1,
+            };
+
+            dispatch(addToCart(cartItem));
+            dispatch(openCart());
+
             await removeFromWishlist(item.product._id);
         } catch (error) {
             console.error('Failed to move to cart:', error);
