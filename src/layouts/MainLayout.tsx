@@ -35,9 +35,15 @@ export const MainLayout = () => {
     fetchCategories();
   }, []);
 
-  // Hide bottom nav only on checkout page, keep it visible elsewhere on mobile
-  // Note: z-indexing in components must handle overlap with sticky product actions
+  // Hide category section and bottom nav on specific pages
   const isCheckoutPage = location.pathname === '/checkout';
+
+  // Routes where CategorySection should be hidden
+  const hiddenCategoryRoutes = ['/profile', '/orders', '/wishlist', '/bulk-enquiry', '/login', '/about'];
+  const isHiddenCategoryRoute = hiddenCategoryRoutes.some(path =>
+    location.pathname === path || location.pathname.startsWith('/orders/') || location.pathname.startsWith('/tracking/')
+  );
+
   const isProductPage = location.pathname.startsWith('/product/');
   const showBottomNav = !isCheckoutPage && !isProductPage;
 
@@ -54,8 +60,8 @@ export const MainLayout = () => {
           {/* Header - Internal responsive logic handles visibility */}
           <Header />
 
-          {/* Global categories bar - just below header / top, with slight gap like Flipkart */}
-          {categories.length > 0 && (
+          {/* Global categories bar - hide on checkout, account, and enquiry pages */}
+          {categories.length > 0 && !isHiddenCategoryRoute && (
             <div className="bg-white mt-1 md:mt-2">
               <div className="container mx-auto px-4">
                 <CategorySection categories={categories} />

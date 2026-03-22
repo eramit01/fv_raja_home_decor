@@ -101,7 +101,7 @@ export const BulkEnquiryPage = () => {
                                     Get instant catalog and bulk pricing directly on your phone.
                                 </p>
                                 <a
-                                    href="https://wa.me/918477876625"
+                                    href="https://wa.me/919258063524"
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white px-5 py-2 rounded-lg font-bold text-sm transition-all shadow-md hover:shadow-lg active:scale-95"

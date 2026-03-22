@@ -3,7 +3,7 @@ import { FaWhatsapp } from 'react-icons/fa'; // Assuming react-icons/fa is avail
 export const WhatsAppButton = () => {
     // Admin phone number - ideally from env or config. Using a default or provided one.
     // The previously used context mentioned ADMIN_PHONES or similar.
-    const phoneNumber = "919876543210"; // Replace with actual business number
+    const phoneNumber = "919258063524"; // Replace with actual business number
     const message = "Hi, I'm interested in your products.";
 
     const handleClick = () => {

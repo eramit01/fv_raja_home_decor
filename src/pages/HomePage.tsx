@@ -147,7 +147,7 @@ export const HomePage = () => {
           <CategoryProductSection
             key={category._id}
             title={category.name}
-            bannerImage={category.banner || category.image || ''}
+            bannerImage={category.banner || ''}
             products={getProductsForSection(category.slug)}
             viewAllLink={`/category/${encodeURIComponent(category.slug)}`}
           />

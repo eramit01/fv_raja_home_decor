@@ -42,7 +42,7 @@ export const Header = () => {
         <div className="md:hidden py-3">
           <div className="flex items-center justify-between gap-4 mb-3.5 px-0.5">
             <Link to="/" className="flex items-center group -ml-1">
-              <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-12 w-auto object-contain drop-shadow-sm transition-transform active:scale-95" />
+              <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-12 w-auto object-contain drop-shadow-sm transition-transform active:scale-95 brightness-0" />
             </Link>
 
             {/* Bulk Inquiry Button */}
@@ -65,7 +65,7 @@ export const Header = () => {
         <div className="hidden md:flex items-center justify-between gap-8 py-4">
           {/* Left - Logo */}
           <Link to="/" className="flex items-center group shrink-0">
-            <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-20 w-auto object-contain" />
+            <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-20 w-auto object-contain brightness-0" />
           </Link>
 
           {/* Center - Search */}

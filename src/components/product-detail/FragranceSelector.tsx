@@ -24,7 +24,7 @@ export const FragranceSelector = ({
 }: FragranceSelectorProps) => {
 
     return (
-        <div className="mb-5 border-t border-gray-100 pt-4">
+        <div className="mb-2 border-t border-gray-100 pt-4">
             <div className="mb-3 ml-0.5">
                 <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em]">Choose Fragrances</h3>
                 <p className="text-[10px] text-gray-400 mt-0.5 font-medium uppercase tracking-tight">Customize your pack (Same or different)</p>

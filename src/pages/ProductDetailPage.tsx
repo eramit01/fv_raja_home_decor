@@ -405,7 +405,6 @@ const ProductDetailPage = () => {
                               rating={product.rating}
                               totalReviews={product.totalReviews}
                             />
-
                           </div>
 
                           <div className="mt-2">
@@ -417,22 +416,27 @@ const ProductDetailPage = () => {
                               Free shipping on all prepaid orders • 7-day easy returns
                             </p>
                           </div>
-
-                          {/* Pincode Delivery Checker */}
-                          <div className="mt-2">
-                          </div>
                         </div>
                       );
 
                     case 'variants':
+                      const hasColors = product.colors && product.colors.length > 0;
+                      const hasSizes = (!product.variants || product.variants.length === 0) && product.sizes && product.sizes.length > 0;
+                      const hasVariants = product.variants && product.variants.length > 0;
+                      const activeVariantForPacks = product.variants?.find(v => v._id === selectedVariantId);
+                      const activePacks = activeVariantForPacks ? activeVariantForPacks.packs : product.packs;
+                      const hasPacks = activePacks && activePacks.length > 0;
+                      const hasFragranceStandalone = product.fragrances && product.fragrances.length > 0 && !hasPacks;
+
+                      if (!hasColors && !hasSizes && !hasVariants && !hasPacks && !hasFragranceStandalone) return null;
+
                       return (
                         <div key="variants" className="space-y-4">
-                          {/* Product Colors */}
-                          {product.colors && product.colors.length > 0 && (
-                            <div className="mb-5">
+                          {hasColors && (
+                            <div className="mb-2">
                               <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Select Color</h3>
                               <div className="flex flex-wrap gap-2.5">
-                                {product.colors.map((color, index) => {
+                                {product.colors?.map((color, index) => {
                                   const isSelected = selectedColor?.label === color.label;
                                   return (
                                     <button
@@ -459,25 +463,18 @@ const ProductDetailPage = () => {
                                   );
                                 })}
                               </div>
-                              {selectedColor && (
-                                <p className="text-[10px] font-black text-black uppercase tracking-widest mt-2 ml-1">
-                                  {selectedColor.label}
-                                </p>
-                              )}
                             </div>
                           )}
 
-                          {/* Legacy Size Selection (Fallback if no variants) */}
-                          {(!product.variants || product.variants.length === 0) && product.sizes && product.sizes.length > 0 && (
+                          {hasSizes && (
                             <SizeSelector
-                              sizes={product.sizes}
+                              sizes={product.sizes || []}
                               selectedSize={selectedSize}
                               onSelectSize={setSelectedSize}
                             />
                           )}
 
-                          {/* Variant Selection */}
-                          {product.variants && product.variants.length > 0 && (
+                          {hasVariants && (
                             <VariantSelector
                               variants={product.variants as any}
                               selectedVariantId={selectedVariantId}
@@ -493,285 +490,268 @@ const ProductDetailPage = () => {
                             />
                           )}
 
-                          {/* Pack Selection (Context Aware) */}
-                          {(() => {
-                            const activeVariant = product.variants?.find(v => v._id === selectedVariantId);
-                            const activePacks = activeVariant ? activeVariant.packs : product.packs;
+                          {hasPacks && (() => {
+                            const activePack = activePacks.find((p: any) => p._id === selectedPackId || p.id === selectedPackId);
+                            const quantity = (activePack as any)?.quantity || 1;
 
-                            if (activePacks && activePacks.length > 0) {
-                              const activePack = activePacks.find((p: any) => p._id === selectedPackId || p.id === selectedPackId);
-                              const quantity = (activePack as any)?.quantity || 1;
-
-                              return (
-                                <>
-                                  <PackSelector
-                                    packs={activePacks as any}
-                                    fragrances={product.allowMixedFragrance ? [] : (product.fragrances || [])}
-                                    selectedPackId={selectedPackId}
-                                    selectedFragrance={selectedFragrance}
-                                    onSelectPack={(id) => {
-                                      setSelectedPackId(id);
-                                      if (product.allowMixedFragrance) {
-                                        const pack = activePacks.find((p: any) => p._id === id || p.id === id);
-                                        const qty = (pack as any)?.quantity || 1;
-                                        const initialFrags = Array(qty).fill(product.fragrances?.[0] || '');
-                                        setSelectedFragrances(initialFrags);
-                                      }
-                                    }}
-                                    onSelectFragrance={setSelectedFragrance}
-                                    basePrice={activeVariant ? activeVariant.price : product.price}
-                                    baseOriginalPrice={activeVariant ? activeVariant.originalPrice : product.originalPrice}
-                                    productImage={
-                                      product.styles?.find(s => s._id === selectedStyleId)?.image ||
-                                      activeVariant?.image ||
-                                      product.images[0]
+                            return (
+                              <>
+                                <PackSelector
+                                  packs={activePacks as any}
+                                  fragrances={product.allowMixedFragrance ? [] : (product.fragrances || [])}
+                                  selectedPackId={selectedPackId}
+                                  selectedFragrance={selectedFragrance}
+                                  onSelectPack={(id) => {
+                                    setSelectedPackId(id);
+                                    if (product.allowMixedFragrance) {
+                                      const pack = activePacks.find((p: any) => p._id === id || p.id === id);
+                                      const qty = (pack as any)?.quantity || 1;
+                                      const initialFrags = Array(qty).fill(product.fragrances?.[0] || '');
+                                      setSelectedFragrances(initialFrags);
                                     }
+                                  }}
+                                  onSelectFragrance={setSelectedFragrance}
+                                  basePrice={activeVariantForPacks ? activeVariantForPacks.price : product.price}
+                                  baseOriginalPrice={activeVariantForPacks ? activeVariantForPacks.originalPrice : product.originalPrice}
+                                  productImage={
+                                    product.styles?.find(s => s._id === selectedStyleId)?.image ||
+                                    activeVariantForPacks?.image ||
+                                    product.images[0]
+                                  }
+                                />
+
+                                {product.allowMixedFragrance && selectedPackId && product.fragrances && (
+                                  <FragranceSelector
+                                    candleCount={quantity}
+                                    selectedFragrances={selectedFragrances}
+                                    fragranceOptions={(product.fragrances || []).map(f => ({
+                                      id: f,
+                                      name: f,
+                                      color: '#6B7280'
+                                    }))}
+                                    onFragranceChange={(index, val) => {
+                                      const newFrags = [...selectedFragrances];
+                                      newFrags[index] = val;
+                                      setSelectedFragrances(newFrags);
+                                    }}
                                   />
-
-                                  {product.allowMixedFragrance && selectedPackId && product.fragrances && (
-                                    <FragranceSelector
-                                      candleCount={quantity}
-                                      selectedFragrances={selectedFragrances}
-                                      fragranceOptions={product.fragrances.map(f => ({
-                                        id: f,
-                                        name: f,
-                                        color: '#6B7280'
-                                      }))}
-                                      onFragranceChange={(index, val) => {
-                                        const newFrags = [...selectedFragrances];
-                                        newFrags[index] = val;
-                                        setSelectedFragrances(newFrags);
-                                      }}
-                                    />
-                                  )}
-                                </>
-                              );
-                            }
-                            return null;
+                                )}
+                              </>
+                            );
                           })()}
 
-                          {/* Fragrance Selection (Standalone) */}
-                          {(() => {
-                            const activeVariant = product.variants?.find(v => v._id === selectedVariantId);
-                            const activePacks = activeVariant ? activeVariant.packs : product.packs;
-                            const hasPacks = activePacks && activePacks.length > 0;
-
-                            if (product.fragrances && product.fragrances.length > 0 && !hasPacks) {
-                              return (
-                                <div className="space-y-3 pt-1.5">
-                                  <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">Choose Fragrance</h3>
-                                  <div className="flex flex-wrap gap-2">
-                                    {product.fragrances.map((fragrance: string, index: number) => (
-                                      <button
-                                        key={index}
-                                        onClick={() => setSelectedFragrance(fragrance)}
-                                        className={`px-4 py-2 rounded-lg border transition-all ${selectedFragrance === fragrance
-                                          ? 'border-primary-600 bg-primary-50 text-primary-700 font-medium ring-1 ring-primary-600'
-                                          : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
-                                          }`}
-                                      >
-                                        {fragrance}
-                                      </button>
-                                    ))}
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return null;
-                          })()}
-                        </div>
-                      );
-
-                    case 'styles':
-                      return (
-                        <div key="styles">
-                          {(() => {
-                            const activeVariant = product.variants?.find(v => v._id === selectedVariantId);
-                            const activePack = activeVariant
-                              ? activeVariant.packs?.find(p => p._id === selectedPackId)
-                              : product.packs?.find(p => (p as any)._id === selectedPackId || (p as any).id === selectedPackId);
-
-                            const availableStyles = (activePack as any)?.styles?.length > 0
-                              ? (activePack as any).styles
-                              : product.styles;
-
-                            if (availableStyles && availableStyles.length > 0) {
-                              return (
-                                <div className="mb-5">
-                                  <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Customize Style</h3>
-                                  <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
-                                    {availableStyles.map((style: any) => {
-                                      const styleId = style._id || style.id || style.label;
-                                      const isSelected = selectedStyleId === styleId || (selectedStyleId === style.label);
-
-                                      return (
-                                        <button
-                                          key={styleId}
-                                          onClick={() => {
-                                            const idToSet = style._id || style.id || style.label;
-                                            setSelectedStyleId(isSelected ? null : idToSet);
-                                          }}
-                                          className={`group flex flex-col items-center justify-center p-2.5 rounded-lg border transition-all duration-200 relative min-h-[56px] ${isSelected
-                                            ? 'border-black bg-black text-white shadow-md scale-[1.02] z-10'
-                                            : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:shadow-sm'
-                                            } cursor-pointer`}
-                                        >
-                                          <div className="text-[11px] font-bold uppercase tracking-wide truncate w-full px-1">{style.label}</div>
-                                          {style.priceAdjustment !== 0 && (
-                                            <div className={`text-[10px] mt-0.5 font-black ${isSelected ? 'text-gray-400' : 'text-gray-900'}`}>
-                                              {style.priceAdjustment > 0 ? '+' : ''}₹{style.priceAdjustment}
-                                            </div>
-                                          )}
-                                        </button>
-                                      );
-                                    })}
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return null;
-                          })()}
-                        </div>
-                      );
-
-                    case 'addons':
-                      return (
-                        <div key="addons">
-                          {product.addOns && product.addOns.length > 0 && (
-                            <div className="mb-5">
-                              <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-3 ml-0.5">Add-Ons</h3>
-                              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                                {product.addOns.map((addon) => {
-                                  const isSelected = selectedAddOnIds.includes(addon._id);
-                                  return (
-                                    <label key={addon._id} className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-all duration-200 ${isSelected ? 'border-black bg-black text-white shadow-md' : 'border-gray-100 bg-gray-50/50 hover:border-gray-300'}`}>
-                                      <div className="flex items-center gap-2.5">
-                                        <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${isSelected ? 'bg-white border-white text-black' : 'border-gray-300 bg-white'}`}>
-                                          {isSelected && <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" /></svg>}
-                                        </div>
-                                        <div className="flex flex-col">
-                                          <span className={`text-[11px] font-black uppercase tracking-tight ${isSelected ? 'text-white' : 'text-gray-900'}`}>{addon.label}</span>
-                                          {addon.description && <span className={`text-[9px] font-medium ${isSelected ? 'text-gray-400' : 'text-gray-500'}`}>{addon.description}</span>}
-                                        </div>
-                                      </div>
-                                      <span className={`text-[11px] font-black ${isSelected ? 'text-white' : 'text-gray-900'}`}>+₹{addon.price}</span>
-                                      <input
-                                        type="checkbox"
-                                        className="hidden"
-                                        checked={isSelected}
-                                        onChange={() => {
-                                          if (isSelected) {
-                                            setSelectedAddOnIds(prev => prev.filter(id => id !== addon._id));
-                                          } else {
-                                            setSelectedAddOnIds(prev => [...prev, addon._id]);
-                                          }
-                                        }}
-                                      />
-                                    </label>
-                                  );
-                                })}
+                          {hasFragranceStandalone && (
+                            <div className="space-y-3 pt-1.5">
+                              <h3 className="text-xs font-bold text-gray-900 uppercase tracking-widest">Choose Fragrance</h3>
+                              <div className="flex flex-wrap gap-2">
+                                {(product.fragrances || []).map((fragrance: string, index: number) => (
+                                  <button
+                                    key={index}
+                                    onClick={() => setSelectedFragrance(fragrance)}
+                                    className={`px-4 py-2 rounded-lg border transition-all ${selectedFragrance === fragrance
+                                      ? 'border-primary-600 bg-primary-50 text-primary-700 font-medium ring-1 ring-primary-600'
+                                      : 'border-gray-200 bg-white text-gray-700 hover:border-gray-300'
+                                      }`}
+                                  >
+                                    {fragrance}
+                                  </button>
+                                ))}
                               </div>
                             </div>
                           )}
                         </div>
                       );
 
-                    case 'summary':
+                    case 'styles':
+                      {
+                        const activeVariant = product.variants?.find(v => v._id === selectedVariantId);
+                        const activePack = activeVariant
+                          ? activeVariant.packs?.find(p => p._id === selectedPackId)
+                          : product.packs?.find(p => (p as any)._id === selectedPackId || (p as any).id === selectedPackId);
+
+                        const availableStyles = (activePack as any)?.styles?.length > 0
+                          ? (activePack as any).styles
+                          : product.styles;
+
+                        if (!availableStyles || availableStyles.length === 0) return null;
+
+                        return (
+                          <div key="styles" className="mb-2">
+                            <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-2.5 ml-0.5">Customize Style</h3>
+                            <div className="grid grid-cols-2 xs:grid-cols-3 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 gap-2 sm:gap-3">
+                              {availableStyles.map((style: any) => {
+                                const styleId = style._id || style.id || style.label;
+                                const isSelected = selectedStyleId === styleId || (selectedStyleId === style.label);
+
+                                return (
+                                  <button
+                                    key={styleId}
+                                    onClick={() => {
+                                      const idToSet = style._id || style.id || style.label;
+                                      setSelectedStyleId(isSelected ? null : idToSet);
+                                    }}
+                                    className={`group flex flex-col items-center justify-center p-2.5 rounded-lg border transition-all duration-200 relative min-h-[56px] ${isSelected
+                                      ? 'border-black bg-black text-white shadow-md scale-[1.02] z-10'
+                                      : 'border-gray-200 bg-white text-gray-600 hover:border-gray-400 hover:shadow-sm'
+                                      } cursor-pointer`}
+                                  >
+                                    <div className="text-[11px] font-bold uppercase tracking-wide truncate w-full px-1">{style.label}</div>
+                                    {style.priceAdjustment !== 0 && (
+                                      <div className={`text-[10px] mt-0.5 font-black ${isSelected ? 'text-gray-400' : 'text-gray-900'}`}>
+                                        {style.priceAdjustment > 0 ? '+' : ''}₹{style.priceAdjustment}
+                                      </div>
+                                    )}
+                                  </button>
+                                );
+                              })}
+                            </div>
+                          </div>
+                        );
+                      }
+
+                    case 'addons':
+                      if (!product.addOns || product.addOns.length === 0) return null;
                       return (
-                        <div key="summary">
-                          {(() => {
-                            const basePriceForBreakdown = pricingResult.basePrice
-                              - pricingResult.breakdown.styleAdjustment
-                              - pricingResult.breakdown.addOnsTotal
-                              - (giftCustomization.active ? giftCustomization.price : 0);
-
-                            const hasBreakdown = pricingResult.discountAmount > 0
-                              || pricingResult.breakdown.styleAdjustment > 0
-                              || pricingResult.breakdown.addOnsTotal > 0
-                              || giftCustomization.active;
-
-                            if (!hasBreakdown) return null;
-
-                            return (
-                              <div className="bg-gray-50/50 rounded-xl p-5 border border-gray-100 space-y-4 mb-6 relative overflow-hidden">
-                                <div className="absolute top-0 right-0 w-24 h-24 bg-gray-100/30 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-110" />
-
-                                <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] flex items-center justify-between">
-                                  <span>Order Price Breakdown</span>
-                                  <span className="h-px bg-gray-200 flex-1 ml-4"></span>
-                                </h3>
-
-                                <div className="space-y-3 text-[13px]">
-                                  {/* Base Price Line */}
-                                  <div className="flex justify-between text-gray-600 font-medium">
-                                    <span className="flex items-center gap-2">
-                                      Base Configuration
-                                    </span>
-                                    <span className="font-bold text-gray-900">₹{basePriceForBreakdown.toLocaleString()}</span>
+                        <div key="addons" className="mb-2">
+                          <h3 className="text-[11px] font-bold text-gray-400 uppercase tracking-[0.08em] mb-2.5 ml-0.5">Add-Ons</h3>
+                          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                            {product.addOns?.map((addon) => {
+                              const isSelected = selectedAddOnIds.includes(addon._id);
+                              return (
+                                <label key={addon._id} className={`flex items-center justify-between p-3 border rounded-lg cursor-pointer transition-all duration-200 ${isSelected ? 'border-black bg-black text-white shadow-md' : 'border-gray-100 bg-gray-50/50 hover:border-gray-300'}`}>
+                                  <div className="flex items-center gap-2.5">
+                                    <div className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${isSelected ? 'bg-white border-white text-black' : 'border-gray-300 bg-white'}`}>
+                                      {isSelected && <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={4} d="M5 13l4 4L19 7" /></svg>}
+                                    </div>
+                                    <div className="flex flex-col">
+                                      <span className={`text-[11px] font-black uppercase tracking-tight ${isSelected ? 'text-white' : 'text-gray-900'}`}>{addon.label}</span>
+                                      {addon.description && <span className={`text-[9px] font-medium ${isSelected ? 'text-gray-400' : 'text-gray-500'}`}>{addon.description}</span>}
+                                    </div>
                                   </div>
-
-                                  {/* Custom Style Line */}
-                                  {selectedStyleId && pricingResult.breakdown.styleAdjustment > 0 && (
-                                    <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-300">
-                                      <span className="flex items-center gap-2">
-                                        <span className="w-1 h-1 rounded-full bg-blue-400" />
-                                        {product.styles?.find(s => s._id === selectedStyleId)?.label || 'Selected Style'}
-                                      </span>
-                                      <span className="font-bold text-gray-900">+₹{pricingResult.breakdown.styleAdjustment.toLocaleString()}</span>
-                                    </div>
-                                  )}
-
-                                  {/* Add-ons Line */}
-                                  {selectedAddOnIds.length > 0 && pricingResult.breakdown.addOnsTotal > 0 && (
-                                    <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-400">
-                                      <span className="flex items-center gap-2">
-                                        <span className="w-1 h-1 rounded-full bg-purple-400" />
-                                        Add-ons ({selectedAddOnIds.length})
-                                      </span>
-                                      <span className="font-bold text-gray-900">+₹{pricingResult.breakdown.addOnsTotal.toLocaleString()}</span>
-                                    </div>
-                                  )}
-
-                                  {/* Personalization Line */}
-                                  {giftCustomization.active && giftCustomization.price > 0 && (
-                                    <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-500">
-                                      <span className="flex items-center gap-2">
-                                        <span className="w-1 h-1 rounded-full bg-orange-400" />
-                                        Gift Personalization
-                                      </span>
-                                      <span className="font-bold text-gray-900">+₹{giftCustomization.price.toLocaleString()}</span>
-                                    </div>
-                                  )}
-
-                                  {/* Discount Line */}
-                                  {pricingResult.discountAmount > 0 && (
-                                    <div className="flex justify-between text-green-600 font-bold bg-green-50/50 -mx-2 px-2 py-1.5 rounded-lg border border-green-100/50">
-                                      <span className="flex items-center gap-2 italic">
-                                        Total Discount Applied
-                                      </span>
-                                      <span className="tracking-tighter">-₹{pricingResult.discountAmount.toLocaleString()}</span>
-                                    </div>
-                                  )}
-                                </div>
-
-                                <div className="border-t border-dashed border-gray-200 pt-4 flex justify-between items-end">
-                                  <div>
-                                    <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Estimated Total</p>
-                                    <p className="text-2xl font-black text-gray-900 tracking-tighter">₹{pricingResult.finalPrice.toLocaleString()}</p>
-                                  </div>
-                                  {pricingResult.discountAmount > 0 && (
-                                    <div className="text-right">
-                                      <p className="text-[10px] font-black text-green-600 uppercase tracking-widest bg-green-100 px-2 py-1 rounded-full inline-block">
-                                        Saved ₹{pricingResult.discountAmount.toLocaleString()}
-                                      </p>
-                                    </div>
-                                  )}
-                                </div>
-                              </div>
-                            );
-                          })()}
+                                  <span className={`text-[11px] font-black ${isSelected ? 'text-white' : 'text-gray-900'}`}>+₹{addon.price}</span>
+                                  <input
+                                    type="checkbox"
+                                    className="hidden"
+                                    checked={isSelected}
+                                    onChange={() => {
+                                      if (isSelected) {
+                                        setSelectedAddOnIds(prev => prev.filter(id => id !== addon._id));
+                                      } else {
+                                        setSelectedAddOnIds(prev => [...prev, addon._id]);
+                                      }
+                                    }}
+                                  />
+                                </label>
+                              );
+                            })}
+                          </div>
                         </div>
                       );
+
+                    case 'gift':
+                      if (!product.giftOptions?.active || !product.giftOptions.occasions?.length) return null;
+                      return (
+                        <div key="gift" className="mb-2">
+                          <GiftCustomization
+                            occasions={product.giftOptions?.occasions || []}
+                            extraPrice={product.giftOptions?.price || 0}
+                            onCustomizationChange={(data) => setGiftCustomization(data)}
+                          />
+                        </div>
+                      );
+
+                    case 'summary':
+                      {
+                        const basePriceForBreakdown = pricingResult.basePrice
+                          - pricingResult.breakdown.styleAdjustment
+                          - pricingResult.breakdown.addOnsTotal
+                          - (giftCustomization.active ? giftCustomization.price : 0);
+
+                        const hasBreakdown = pricingResult.discountAmount > 0
+                          || pricingResult.breakdown.styleAdjustment > 0
+                          || pricingResult.breakdown.addOnsTotal > 0
+                          || giftCustomization.active;
+
+                        if (!hasBreakdown) return null;
+
+                        return (
+                          <div key="summary" className="bg-gray-50/50 rounded-xl p-5 border border-gray-100 space-y-4 mb-2.5 relative overflow-hidden">
+                            <div className="absolute top-0 right-0 w-24 h-24 bg-gray-100/30 rounded-full -mr-12 -mt-12 transition-transform group-hover:scale-110" />
+
+                            <h3 className="text-[11px] font-black text-gray-400 uppercase tracking-[0.15em] flex items-center justify-between">
+                              <span>Order Price Breakdown</span>
+                              <span className="h-px bg-gray-200 flex-1 ml-4"></span>
+                            </h3>
+
+                            <div className="space-y-3 text-[13px]">
+                              {/* Base Price Line */}
+                              <div className="flex justify-between text-gray-600 font-medium">
+                                <span className="flex items-center gap-2">
+                                  Base Configuration
+                                </span>
+                                <span className="font-bold text-gray-900">₹{basePriceForBreakdown.toLocaleString()}</span>
+                              </div>
+
+                              {/* Custom Style Line */}
+                              {selectedStyleId && pricingResult.breakdown.styleAdjustment > 0 && (
+                                <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-300">
+                                  <span className="flex items-center gap-2">
+                                    <span className="w-1 h-1 rounded-full bg-blue-400" />
+                                    {product.styles?.find(s => s._id === selectedStyleId)?.label || 'Selected Style'}
+                                  </span>
+                                  <span className="font-bold text-gray-900">+₹{pricingResult.breakdown.styleAdjustment.toLocaleString()}</span>
+                                </div>
+                              )}
+
+                              {/* Add-ons Line */}
+                              {selectedAddOnIds.length > 0 && pricingResult.breakdown.addOnsTotal > 0 && (
+                                <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-400">
+                                  <span className="flex items-center gap-2">
+                                    <span className="w-1 h-1 rounded-full bg-purple-400" />
+                                    Add-ons ({selectedAddOnIds.length})
+                                  </span>
+                                  <span className="font-bold text-gray-900">+₹{pricingResult.breakdown.addOnsTotal.toLocaleString()}</span>
+                                </div>
+                              )}
+
+                              {/* Personalization Line */}
+                              {giftCustomization.active && giftCustomization.price > 0 && (
+                                <div className="flex justify-between text-gray-600 animate-in fade-in slide-in-from-left-2 duration-500">
+                                  <span className="flex items-center gap-2">
+                                    <span className="w-1 h-1 rounded-full bg-orange-400" />
+                                    Gift Personalization
+                                  </span>
+                                  <span className="font-bold text-gray-900">+₹{giftCustomization.price.toLocaleString()}</span>
+                                </div>
+                              )}
+
+                              {/* Discount Line */}
+                              {pricingResult.discountAmount > 0 && (
+                                <div className="flex justify-between text-green-600 font-bold bg-green-50/50 -mx-2 px-2 py-1.5 rounded-lg border border-green-100/50">
+                                  <span className="flex items-center gap-2 italic">
+                                    Total Discount Applied
+                                  </span>
+                                  <span className="tracking-tighter">-₹{pricingResult.discountAmount.toLocaleString()}</span>
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="border-t border-dashed border-gray-200 pt-4 flex justify-between items-end">
+                              <div>
+                                <p className="text-[10px] font-bold text-gray-400 uppercase tracking-widest mb-0.5">Estimated Total</p>
+                                <p className="text-2xl font-black text-gray-900 tracking-tighter">₹{pricingResult.finalPrice.toLocaleString()}</p>
+                              </div>
+                              {pricingResult.discountAmount > 0 && (
+                                <div className="text-right">
+                                  <p className="text-[10px] font-black text-green-600 uppercase tracking-widest bg-green-100 px-2 py-1 rounded-full inline-block">
+                                    Saved ₹{pricingResult.discountAmount.toLocaleString()}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        );
+                      }
 
                     case 'description':
                       return (
