@@ -9,9 +9,9 @@ export interface Banner {
 }
 
 export const bannerService = {
-  getActiveBanners: async () => {
+  getActiveBanners: async (page?: string) => {
     try {
-      const response = await api.get('/banners');
+      const response = await api.get('/banners', { params: { page } });
       return response.data;
     } catch (error) {
       console.error('Failed to fetch banners', error);

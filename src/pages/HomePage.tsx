@@ -9,6 +9,7 @@ import { CategoryProductSection } from '../components/CategoryProductSection';
 import { BestSellingSection } from '../components/BestSellingSection';
 import { WhyChooseUs } from '../components/WhyChooseUs';
 import { BulkCTASection } from '../components/BulkCTASection';
+import { Stories } from '../components/home/Stories';
 import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
 
 export const HomePage = () => {
@@ -22,7 +23,7 @@ export const HomePage = () => {
       try {
         const [productsData, bannersData, categoriesData] = await Promise.all([
           productService.getAllProducts({ showOnHome: true, limit: 500 } as any), // Fetch only home products
-          bannerService.getActiveBanners(),
+          bannerService.getActiveBanners('home'),
           categoryService.getCategories()
         ]);
 
@@ -159,6 +160,8 @@ export const HomePage = () => {
 
       {/* Bulk CTA Section */}
       <BulkCTASection />
+
+      <Stories />
     </main>
   );
 };
