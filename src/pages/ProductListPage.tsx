@@ -9,6 +9,7 @@ import { getFiltersForCategory, priceRangeConfig } from '../data/categoryFilters
 import { MobileFilterSheet } from '../components/MobileFilterSheet';
 import { FiFilter, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
+import { SEO } from '../components/SEO';
 
 export const ProductListPage = () => {
   const { categoryId } = useParams();
@@ -92,6 +93,10 @@ export const ProductListPage = () => {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <SEO 
+        title={categoryId ? `${categoryId} Products` : 'All Products'} 
+        description={`Browse our premium selection of ${categoryId || 'home decor and candle products'} at Raja Home Decor.`} 
+      />
       <div className="flex flex-col md:flex-row gap-8">
 
         {/* Desktop Sidebar */}

@@ -10,7 +10,7 @@ import { ProductService, ProductParams } from '../services/product.service';
 
 import { Product } from '../types';
 import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
-
+import { SEO } from '../components/SEO';
 
 export const CategoryPage = () => {
     const { categorySlug = '' } = useParams<{ categorySlug: string }>();
@@ -177,6 +177,7 @@ export const CategoryPage = () => {
 
     return (
         <div className="min-h-screen bg-gray-50">
+            <SEO title={meta.title} description={meta.subtitle} image={bannerImage} />
             {/* Category Header */}
             <div className="bg-white border-b border-gray-100">
                 <div className="container mx-auto px-4 py-4">

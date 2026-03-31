@@ -1,6 +1,7 @@
 
 import React from 'react';
 import { FiCheckCircle, FiPackage, FiUsers, FiGlobe, FiAward, FiShield, FiTrendingUp } from 'react-icons/fi';
+import { SEO } from '../components/SEO';
 
 /* ─────────────────────────────────────────────
    ABOUT US PAGE — Premium Responsive Redesign
@@ -8,6 +9,7 @@ import { FiCheckCircle, FiPackage, FiUsers, FiGlobe, FiAward, FiShield, FiTrendi
 export const AboutUsPage = () => {
     return (
         <div className="bg-white min-h-screen font-['Outfit',sans-serif]">
+            <SEO title="About Us" description="From a small workshop to India's Factory Floor. Learn more about Raja Home Decor and our premium manufacturing." />
 
             {/* ── HERO ── */}
             <section className="relative overflow-hidden bg-gray-950 text-white">

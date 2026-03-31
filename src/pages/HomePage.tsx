@@ -11,6 +11,7 @@ import { WhyChooseUs } from '../components/WhyChooseUs';
 import { BulkCTASection } from '../components/BulkCTASection';
 import { Stories } from '../components/home/Stories';
 import { ProductListSkeleton } from '../components/skeletons/ProductListSkeleton';
+import { SEO } from '../components/SEO';
 
 export const HomePage = () => {
   const [products, setProducts] = useState<Product[]>([]);
@@ -131,6 +132,7 @@ export const HomePage = () => {
 
   return (
     <main className="min-h-screen bg-gray-50 pb-10">
+      <SEO title="Home" />
       <h1 className="sr-only">Raja Home Decor - Premium Candles, Glass Vases, Thali Sets & Corporate Gifts</h1>
       {/* Banner Slider - Full Width */}
       <div className="w-full mt-2">

@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 import { calculateFinalPrice } from '../utils/pricingEngine';
 
 import { FiShoppingBag } from 'react-icons/fi';
+import { SEO } from '../components/SEO';
 import { ImageGallery } from '../components/product-detail/ImageGallery';
 import { PricingBlock } from '../components/product-detail/PricingBlock';
 import { RatingsSummary } from '../components/product-detail/RatingsSummary';
@@ -328,6 +329,7 @@ const ProductDetailPage = () => {
   if (!product) {
     return (
       <div className="min-h-screen flex items-center justify-center">
+        <SEO title="Product Not Found" />
         <div className="text-center">
           <h2 className="text-2xl font-bold text-gray-800 mb-2">Product not found</h2>
           <button
@@ -343,6 +345,12 @@ const ProductDetailPage = () => {
 
   return (
     <div className="min-h-screen bg-white pb-12 text-[#2A2421]">
+      <SEO 
+        title={product.name} 
+        description={product.shortDescription || product.description?.substring(0, 160) || ''} 
+        image={product.images[0]}
+        type="product"
+      />
       <div className="max-w-7xl mx-auto px-4 py-2 lg:py-4">
 
         <div className="lg:grid lg:grid-cols-12 lg:gap-8 lg:items-start">
