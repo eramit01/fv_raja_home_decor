@@ -41,7 +41,7 @@ export const CheckoutPage = () => {
   const { user } = useSelector((state: RootState) => state.auth);
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [paymentMethod, setPaymentMethod] = useState<'cod' | 'online'>('cod');
+  const [paymentMethod, setPaymentMethod] = useState<'cod' | 'online'>('online');
   const [isProcessing, setIsProcessing] = useState(false);
   const [selectedAddressId, setSelectedAddressId] = useState<string | undefined>(undefined);
 
@@ -87,7 +87,7 @@ export const CheckoutPage = () => {
   };
 
   // Pricing Calculation
-  const shippingCharges = total > 1000 ? 0 : 50;
+  const shippingCharges = 0; // Disabled for testing (previously: total > 1000 ? 0 : 50)
   const discountAmount = appliedCoupon ? (
     appliedCoupon.type === 'percentage'
       ? Math.round((total * appliedCoupon.value) / 100)
@@ -206,8 +206,6 @@ export const CheckoutPage = () => {
         // Open Razorpay
         const options = {
           key: (order as any).razorpayKeyId || import.meta.env.VITE_RAZORPAY_KEY_ID,
-          amount: finalTotal * 100, // Amount in paise
-          currency: "INR",
           name: "Ecommerce Platform",
           description: "Order Payment",
           order_id: order.razorpayOrderId,
