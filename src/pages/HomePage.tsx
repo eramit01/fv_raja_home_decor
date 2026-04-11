@@ -135,7 +135,7 @@ export const HomePage = () => {
       <SEO title="Home" />
       <h1 className="sr-only">Raja Home Decor - Premium Candles, Glass Vases, Thali Sets & Corporate Gifts</h1>
       {/* Banner Slider - Full Width */}
-      <div className="w-full mt-2">
+      <div className="w-full">
         <BannerSlider banners={banners} />
       </div>
 
@@ -151,6 +151,7 @@ export const HomePage = () => {
             key={category._id}
             title={category.name}
             bannerImage={category.banner || ''}
+            mobileBannerImage={category.mobileBanner}
             products={getProductsForSection(category.slug)}
             viewAllLink={`/category/${encodeURIComponent(category.slug)}`}
           />

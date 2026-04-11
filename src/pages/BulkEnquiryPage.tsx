@@ -70,12 +70,15 @@ export const BulkEnquiryPage = () => {
                     >
                         {banners.map((banner) => (
                             <SwiperSlide key={banner._id}>
-                                <div className="relative w-full aspect-[4/3] md:aspect-[21/9] lg:h-[60vh] bg-gray-100">
-                                    <img 
-                                        src={banner.image} 
-                                        alt={banner.title} 
-                                        className="w-full h-full object-contain md:object-cover" 
-                                    />
+                                <div className="relative w-full md:max-h-[450px] bg-gray-100 flex overflow-hidden lg:justify-center">
+                                    <picture className="w-full h-auto md:h-[450px] flex">
+                                        {banner.mobileImage && <source media="(max-width: 768px)" srcSet={banner.mobileImage} />}
+                                        <img 
+                                            src={banner.image} 
+                                            alt={banner.title} 
+                                            className="w-full h-auto md:h-[450px] object-contain md:object-cover" 
+                                        />
+                                    </picture>
                                     {/* Link overlay if banner has a link */}
                                     {banner.link && (
                                         <a href={banner.link} className="absolute inset-0 z-10"></a>

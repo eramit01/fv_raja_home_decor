@@ -6,6 +6,7 @@ import { FiArrowRight } from 'react-icons/fi';
 interface CategoryProductSectionProps {
     title: string;
     bannerImage: string;
+    mobileBannerImage?: string;
     products: Product[];
     viewAllLink?: string;
 }
@@ -13,6 +14,7 @@ interface CategoryProductSectionProps {
 export const CategoryProductSection = ({
     title,
     bannerImage,
+    mobileBannerImage,
     products,
     viewAllLink = '/products',
 }: CategoryProductSectionProps) => {
@@ -41,13 +43,16 @@ export const CategoryProductSection = ({
                         to={viewAllLink}
                         className="block -mx-4 sm:-mx-6 lg:-mx-8 mb-5 md:mb-8 lg:mb-10 hover:opacity-95 transition-opacity duration-300"
                     >
-                        <div className="w-full overflow-hidden bg-gray-100 flex items-center justify-center max-h-40 sm:max-h-56 md:max-h-72 lg:max-h-80 xl:max-h-96">
-                            <img
-                                src={bannerImage}
-                                alt={`${title} Banner`}
-                                className="w-full h-full object-contain pointer-events-none"
-                                loading="lazy"
-                            />
+                        <div className="w-full bg-gray-100 flex md:max-h-[280px] overflow-hidden lg:justify-center text-center">
+                            <picture className="w-full h-auto md:h-[280px] block">
+                                {mobileBannerImage && <source media="(max-width: 1024px)" srcSet={mobileBannerImage} />}
+                                <img
+                                    src={bannerImage}
+                                    alt={`${title} Banner`}
+                                    className="w-full h-auto md:h-[280px] object-contain md:object-cover pointer-events-none mx-auto"
+                                    loading="lazy"
+                                />
+                            </picture>
                         </div>
                     </Link>
                 )}

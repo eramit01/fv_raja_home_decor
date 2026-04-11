@@ -6,6 +6,7 @@ export interface Category {
   slug: string;
   image?: string;
   banner?: string;
+  mobileBanner?: string;
   icon?: string;
 }
 

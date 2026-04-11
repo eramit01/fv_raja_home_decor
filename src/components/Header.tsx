@@ -62,10 +62,10 @@ export const Header = () => {
         </div>
 
         {/* Desktop Layout */}
-        <div className="hidden md:flex items-center justify-between gap-8 py-4">
+        <div className="hidden md:flex items-center justify-between gap-6 py-2">
           {/* Left - Logo */}
           <Link to="/" className="flex items-center group shrink-0">
-            <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-20 w-auto object-contain brightness-0" />
+            <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-14 w-auto object-contain brightness-0" />
           </Link>
 
           {/* Center - Search */}
@@ -74,7 +74,7 @@ export const Header = () => {
           </div>
 
           {/* Right - Account, Cart, Bulk Inquiry */}
-          <div className="flex items-center gap-8 whitespace-nowrap">
+          <div className="flex items-center gap-6 whitespace-nowrap">
             {/* Account - Dropdown */}
             <div
               className="relative group"

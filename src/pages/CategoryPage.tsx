@@ -95,6 +95,7 @@ export const CategoryPage = () => {
 
     const filters = useMemo(() => getFiltersForCategory(isSearchMode ? 'all' : categorySlug), [categorySlug, isSearchMode]);
     const bannerImage = categoryInfo?.banner;
+    const mobileBannerImage = categoryInfo?.mobileBanner;
 
     const handleFilterChange = (filterId: string, value: string) => {
         setSelectedFilters(prev => {
@@ -214,15 +215,16 @@ export const CategoryPage = () => {
 
             {/* ... existing banner ... */}
             {bannerImage && (
-                <div className="w-full">
-                    <div className="w-full overflow-hidden bg-gray-100 aspect-[1900/650]">
+                <div className="w-full block md:max-h-[300px] overflow-hidden bg-gray-100">
+                    <picture className="w-full h-auto block md:h-[300px]">
+                        {mobileBannerImage && <source media="(max-width: 1024px)" srcSet={mobileBannerImage} />}
                         <img
                             src={bannerImage}
                             alt={meta.title}
-                            className="w-full h-full object-contain"
+                            className="w-full h-auto md:h-[300px] block object-contain md:object-cover"
                             loading="lazy"
                         />
-                    </div>
+                    </picture>
                 </div>
             )}
 

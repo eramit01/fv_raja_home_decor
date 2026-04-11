@@ -14,7 +14,7 @@ export const BannerSlider = ({ banners }: BannerSliderProps) => {
   if (!banners || banners.length === 0) return null;
 
   return (
-    <div className="mb-6">
+    <div className="mb-4">
       <Swiper
         modules={[Autoplay, Pagination, Navigation]}
         spaceBetween={10}
@@ -34,13 +34,16 @@ export const BannerSlider = ({ banners }: BannerSliderProps) => {
         {banners.map((banner) => (
           <SwiperSlide key={banner._id}>
             <Link to={banner.link || '#'} draggable="false">
-              <div className="w-full overflow-hidden bg-gray-100 flex items-center justify-center max-h-40 sm:max-h-56 md:max-h-72 lg:max-h-80 xl:max-h-96">
-                <img
-                  src={banner.image}
-                  alt={banner.title}
-                  className="w-full h-full object-contain pointer-events-none"
-                  loading="lazy"
-                />
+              <div className="w-full md:max-h-[400px] overflow-hidden flex items-center justify-center bg-gray-100">
+                <picture className="w-full h-auto md:h-[400px] flex">
+                  {banner.mobileImage && <source media="(max-width: 768px)" srcSet={banner.mobileImage} />}
+                  <img
+                    src={banner.image}
+                    alt={banner.title}
+                    className="w-full h-auto md:h-[400px] block object-contain md:object-cover pointer-events-none"
+                    loading="lazy"
+                  />
+                </picture>
               </div>
             </Link>
           </SwiperSlide>
