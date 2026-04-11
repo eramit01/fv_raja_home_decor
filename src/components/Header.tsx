@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store';
-import { FiShoppingCart, FiUser, FiHeart, FiSearch, FiShoppingBag } from 'react-icons/fi';
+import { FiShoppingCart, FiUser, FiHeart, FiSearch, FiTruck } from 'react-icons/fi';
 import { SearchBar } from './SearchBar';
 import { useWishlist } from '../context/WishlistContext';
 import { authService } from '../services/auth.service';
@@ -42,7 +42,7 @@ export const Header = () => {
         <div className="md:hidden py-3">
           <div className="flex items-center justify-between gap-4 mb-3.5 px-0.5">
             <Link to="/" className="flex items-center group -ml-1">
-              <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-12 w-auto object-contain drop-shadow-sm transition-transform active:scale-95 brightness-0" />
+              <img src="/banners/Logo/logo2.png" alt="Raja Home Decor" className="h-14 w-auto object-contain drop-shadow-sm transition-transform active:scale-95 brightness-0" />
             </Link>
 
             {/* Bulk Inquiry Button */}
@@ -50,7 +50,7 @@ export const Header = () => {
               onClick={() => navigate('/bulk-enquiry')}
               className="bg-accent hover:bg-accent-hover text-white px-3 py-1.5 rounded-full text-[10px] font-black uppercase tracking-wider transition-all shadow-md active:scale-95 flex items-center gap-1.5 border border-white/20 whitespace-nowrap flex-shrink-0"
             >
-              <FiShoppingBag className="w-3.5 h-3.5" />
+              <FiTruck className="w-3.5 h-3.5" />
               <span>Bulk Enquiry</span>
             </button>
           </div>
@@ -165,7 +165,7 @@ export const Header = () => {
               onClick={() => navigate('/bulk-enquiry')}
               className="bg-accent hover:bg-accent-hover text-white px-6 py-2.5 rounded-full text-sm font-bold transition-all active:scale-95 shadow-lg hover:shadow-accent/30 flex items-center gap-2"
             >
-              <FiShoppingBag className="w-4 h-4" />
+              <FiTruck className="w-4 h-4" />
               Bulk Inquiry
             </button>
           </div>

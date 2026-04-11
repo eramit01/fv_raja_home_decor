@@ -55,7 +55,6 @@ export const BulkEnquiryPage = () => {
 
     return (
         <div className="min-h-screen bg-white">
-            {/* Hero Slider Section */}
             <div className="relative w-full">
                 {banners.length > 0 ? (
                     <Swiper
@@ -105,6 +104,18 @@ export const BulkEnquiryPage = () => {
                          </div>
                     </div>
                 )}
+            </div>
+
+            {/* Manufacturing Process (Stories Integration) */}
+            <div className="bg-gray-50 py-16 border-b border-gray-100">
+                 <div className="container mx-auto px-4 text-center mb-0">
+                    <span className="text-accent font-bold uppercase tracking-widest text-[10px]">Transparency in Motion</span>
+                    <h2 className="text-2xl md:text-4xl font-black text-gray-900 mt-2 tracking-tight">Our Manufacturing Process</h2>
+                    <p className="text-gray-500 text-[10px] md:text-sm leading-relaxed font-medium max-w-2xl mx-auto mt-2">
+                        Watch how every product is crafted with precision, quality, and care — before it reaches you.
+                    </p>
+                 </div>
+                 <Stories hideHeader={true} />
             </div>
 
             {/* Professional Value Proposition - Compact */}
@@ -229,17 +240,7 @@ export const BulkEnquiryPage = () => {
                 </div>
             </div>
 
-            {/* Manufacturing Process (Stories Integration - Moved Down) */}
-            <div className="bg-gray-50 py-16 border-t border-gray-100">
-                 <div className="container mx-auto px-4 text-center mb-0">
-                    <span className="text-accent font-bold uppercase tracking-widest text-[10px]">Transparency in Motion</span>
-                    <h2 className="text-2xl md:text-4xl font-black text-gray-900 mt-2 tracking-tight">Our Manufacturing Process</h2>
-                    <p className="text-gray-500 text-[10px] md:text-sm leading-relaxed font-medium max-w-2xl mx-auto mt-2">
-                        Watch how every product is crafted with precision, quality, and care — before it reaches you.
-                    </p>
-                 </div>
-                 <Stories hideHeader={true} />
-            </div>
+
         </div>
     );
 };
