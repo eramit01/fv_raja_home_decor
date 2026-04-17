@@ -65,5 +65,10 @@ export const OrderService = {
     getOrderById: async (id: string) => {
         const response = await api.get(`/orders/${id}`);
         return response.data.data.order;
+    },
+
+    downloadInvoice: async (id: string) => {
+        const response = await api.get(`/orders/${id}/invoice`);
+        return response.data.data;
     }
 };

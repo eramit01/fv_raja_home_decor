@@ -93,43 +93,79 @@ export const OrderTrackingPage = () => {
                         <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 md:p-8">
                             <h3 className="font-bold text-gray-900 mb-8 border-b pb-4">Tracking History</h3>
 
-                            <div className="relative pl-8 space-y-12">
-                                {/* Vertical line connecting nodes */}
-                                <div className="absolute left-[39px] top-6 bottom-6 w-0.5 bg-gray-200"></div>
+                            {order.trackingHistory && order.trackingHistory.length > 0 ? (
+                                <div className="relative pl-8 space-y-12">
+                                    {/* Vertical line connecting nodes */}
+                                    <div className="absolute left-[39px] top-6 bottom-6 w-0.5 bg-gray-200"></div>
 
-                                {steps.map((step, index) => {
-                                    const isCompleted = index <= currentStepIndex;
-                                    const isCurrent = index === currentStepIndex;
-                                    const StepIcon = step.icon;
-                                    return (
-                                        <div key={step.key} className={`relative flex gap-6 ${isCompleted ? 'opacity-100' : 'opacity-40'}`}>
-                                            {/* Timeline Node */}
-                                            <div className={`absolute -left-[56px] top-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center bg-white z-10 transition-colors duration-500
-                            ${isCompleted ? 'border-primary-500 text-primary-600' : 'border-gray-200 text-gray-400'}
-                            ${isCurrent ? 'ring-4 ring-primary-100' : ''}
-                        `}>
-                                                <StepIcon className="w-5 h-5" />
-                                            </div>
+                                    {order.trackingHistory.map((event: any, index: number) => {
+                                        const isLatest = index === order.trackingHistory.length - 1;
+                                        return (
+                                            <div key={index} className="relative flex gap-6">
+                                                {/* Timeline Node */}
+                                                <div className={`absolute -left-[56px] top-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center bg-white z-10 transition-colors duration-500
+                                                    ${isLatest ? 'border-primary-500 text-primary-600 ring-4 ring-primary-100' : 'border-gray-200 text-gray-400'}
+                                                `}>
+                                                    {isLatest ? <FiTruck className="w-5 h-5" /> : <FiCheckCircle className="w-5 h-5" />}
+                                                </div>
 
-                                            {/* Content */}
-                                            <div className="flex-1">
-                                                <h4 className={`text-lg font-bold ${isCompleted ? 'text-gray-900' : 'text-gray-500'}`}>
-                                                    {step.label}
-                                                </h4>
-                                                <p className={`text-sm mt-1 flex items-center gap-1.5 ${isCompleted ? 'text-gray-600' : 'text-gray-400'}`}>
-                                                    <FiClock className="w-3.5 h-3.5" />
-                                                    {step.date}
-                                                </p>
-                                                {isCurrent && index < 4 && (
-                                                    <p className="text-sm text-primary-600 font-medium mt-3 bg-primary-50 inline-block px-3 py-1 rounded-full">
-                                                        Your package is currently here
+                                                {/* Content */}
+                                                <div className="flex-1">
+                                                    <div className="flex items-center justify-between">
+                                                        <h4 className={`text-lg font-bold ${isLatest ? 'text-gray-900' : 'text-gray-500'}`}>
+                                                            {event.status}
+                                                        </h4>
+                                                        <span className="text-[10px] font-bold text-gray-400 font-mono">
+                                                            {new Date(event.timestamp).toLocaleString()}
+                                                        </span>
+                                                    </div>
+                                                    <p className={`text-sm mt-1 ${isLatest ? 'text-gray-600' : 'text-gray-400'}`}>
+                                                        {event.activity}
                                                     </p>
-                                                )}
+                                                    {event.location && (
+                                                        <p className="text-xs font-bold text-primary-600 mt-2 flex items-center gap-1 uppercase tracking-wider">
+                                                            <FiMapPin className="w-3 h-3" /> {event.location}
+                                                        </p>
+                                                    )}
+                                                </div>
                                             </div>
-                                        </div>
-                                    )
-                                })}
-                            </div>
+                                        )
+                                    }).reverse()}
+                                </div>
+                            ) : (
+                                <div className="relative pl-8 space-y-12">
+                                    {/* Vertical line connecting nodes */}
+                                    <div className="absolute left-[39px] top-6 bottom-6 w-0.5 bg-gray-200"></div>
+
+                                    {steps.map((step, index) => {
+                                        const isCompleted = index <= currentStepIndex;
+                                        const isCurrent = index === currentStepIndex;
+                                        const StepIcon = step.icon;
+                                        return (
+                                            <div key={step.key} className={`relative flex gap-6 ${isCompleted ? 'opacity-100' : 'opacity-40'}`}>
+                                                {/* Timeline Node */}
+                                                <div className={`absolute -left-[56px] top-0 w-12 h-12 rounded-full border-[3px] flex items-center justify-center bg-white z-10 transition-colors duration-500
+                                ${isCompleted ? 'border-primary-500 text-primary-600' : 'border-gray-200 text-gray-400'}
+                                ${isCurrent ? 'ring-4 ring-primary-100' : ''}
+                            `}>
+                                                    <StepIcon className="w-5 h-5" />
+                                                </div>
+
+                                                {/* Content */}
+                                                <div className="flex-1">
+                                                    <h4 className={`text-lg font-bold ${isCompleted ? 'text-gray-900' : 'text-gray-500'}`}>
+                                                        {step.label}
+                                                    </h4>
+                                                    <p className={`text-sm mt-1 flex items-center gap-1.5 ${isCompleted ? 'text-gray-600' : 'text-gray-400'}`}>
+                                                        <FiClock className="w-3.5 h-3.5" />
+                                                        {step.date}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            )}
                         </div>
                     </div>
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { OrderService } from '../services/order.service';
-import { FiArrowLeft, FiPackage, FiTruck, FiMapPin, FiCreditCard, FiTag, FiCheckCircle, FiClock, FiXCircle } from 'react-icons/fi';
+import { FiArrowLeft, FiPackage, FiTruck, FiMapPin, FiCreditCard, FiTag, FiCheckCircle, FiClock, FiXCircle, FiFileText } from 'react-icons/fi';
 import { Skeleton } from '../components/ui/Skeleton';
 
 
@@ -87,6 +87,21 @@ export const OrderDetailPage = () => {
         }
     };
 
+    const handleDownloadInvoice = async () => {
+        if (!order) return;
+        try {
+            const data = await OrderService.downloadInvoice(order._id);
+            if (data.invoice_url) {
+                window.open(data.invoice_url, '_blank');
+            } else {
+                alert(data.message || "Invoice is being generated. Please try again in 5 minutes.");
+            }
+        } catch (error: any) {
+            console.error('Invoice download failed', error);
+            alert(error.response?.data?.message || "Failed to fetch invoice");
+        }
+    };
+
     if (isLoading) {
         return (
             <div className="min-h-screen bg-[#FDFBF9] py-12">
@@ -152,8 +167,16 @@ export const OrderDetailPage = () => {
                             {sC.label}
                         </div>
                         {order.status === 'shipped' && (
-                            <button className="bg-gray-900 text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg hover:bg-black transition-all active:scale-95 flex items-center gap-2">
+                            <Link to={`/orders/track/${order._id}`} className="bg-gray-900 text-white px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg hover:bg-black transition-all active:scale-95 flex items-center gap-2">
                                 <FiTruck className="w-4 h-4" /> Track
+                            </Link>
+                        )}
+                        {['shipped', 'delivered'].includes(order.status) && (
+                            <button 
+                                onClick={handleDownloadInvoice}
+                                className="bg-white text-gray-900 border-2 border-gray-900 px-5 py-2.5 rounded-full text-xs font-black uppercase tracking-widest shadow-lg hover:bg-gray-50 transition-all active:scale-95 flex items-center gap-2"
+                            >
+                                <FiFileText className="w-4 h-4" /> Invoice
                             </button>
                         )}
                     </div>
