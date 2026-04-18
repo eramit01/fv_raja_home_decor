@@ -24,6 +24,7 @@
   --bg-premium: #ffffff;
   --text-main: #000000;
   --text-gold: #525252;
+  --border: #e5e7eb;
 }
 
 @layer base {
