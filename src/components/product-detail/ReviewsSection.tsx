@@ -24,16 +24,21 @@ export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
     const [loading, setLoading] = useState(true);
     const [page, setPage] = useState(1);
     const [hasMore, setHasMore] = useState(false);
+    const [showAll, setShowAll] = useState(false);
 
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                setLoading(true);
-                const response = await api.get(`/reviews/product/${productId}?page=${page}&limit=5`);
+                if (page === 1) setLoading(true);
+                const response = await api.get(`/reviews/product/${productId}?page=${page}&limit=10`);
                 const data = response.data;
 
                 if (data.success && data.data.reviews) {
-                    setReviews(data.data.reviews);
+                    if (page === 1) {
+                        setReviews(data.data.reviews);
+                    } else {
+                        setReviews(prev => [...prev, ...data.data.reviews]);
+                    }
                     if (data.data.pagination) {
                         setHasMore(data.data.pagination.page < data.data.pagination.pages);
                     } else {
@@ -74,7 +79,7 @@ export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
             ) : (
                 <>
                     <div className="space-y-4">
-                        {reviews.map((review) => (
+                        {(showAll ? reviews : reviews.slice(0, 2)).map((review) => (
                             <div
                                 key={review._id}
                                 className="p-4 bg-gray-50 rounded-xl"
@@ -133,12 +138,21 @@ export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
                         ))}
                     </div>
 
-                    {hasMore && (
+                    {!showAll && reviews.length > 2 && (
                         <button
-                            onClick={() => setPage(page + 1)}
-                            className="w-full py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors"
+                            onClick={() => setShowAll(true)}
+                            className="w-full py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors mt-4"
                         >
                             View More Reviews
+                        </button>
+                    )}
+
+                    {showAll && hasMore && (
+                        <button
+                            onClick={() => setPage(page + 1)}
+                            className="w-full py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors mt-4"
+                        >
+                            Load More
                         </button>
                     )}
                 </>
