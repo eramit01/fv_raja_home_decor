@@ -78,62 +78,72 @@ export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
                 </div>
             ) : (
                 <>
-                    <div className="space-y-4">
+                    <div className="space-y-0">
                         {(showAll ? reviews : reviews.slice(0, 2)).map((review) => (
                             <div
                                 key={review._id}
-                                className="p-4 bg-gray-50 rounded-xl"
+                                className="py-4 border-b border-gray-100 last:border-0"
                             >
-                                <div className="flex items-center justify-between mb-2">
-                                    <span className="font-medium text-gray-900">
-                                        {review.manualName || review.user?.name || 'Anonymous'}
-                                    </span>
-                                    <div className="flex items-center gap-1 text-yellow-500">
+                                <div className="flex items-start justify-between mb-1">
+                                    <div className="flex items-center gap-3">
+                                        <div className="w-8 h-8 rounded-full bg-gray-100 flex items-center justify-center text-gray-600 font-bold text-xs uppercase shrink-0">
+                                            {(review.manualName || review.user?.name || 'A')[0]}
+                                        </div>
+                                        <div>
+                                            <span className="font-bold text-gray-900 text-sm block leading-tight">
+                                                {review.manualName || review.user?.name || 'Anonymous'}
+                                            </span>
+                                            <span className="text-[10px] text-gray-400 font-medium">
+                                                {new Date(review.createdAt).toLocaleDateString('en-IN', {
+                                                    year: 'numeric',
+                                                    month: 'short',
+                                                    day: 'numeric'
+                                                })}
+                                            </span>
+                                        </div>
+                                    </div>
+                                    <div className="flex items-center gap-0.5 text-yellow-400 mt-1">
                                         {[...Array(5)].map((_, i) => (
                                             <FiStar
                                                 key={i}
-                                                size={14}
+                                                size={12}
                                                 fill={i < review.rating ? 'currentColor' : 'none'}
+                                                className={i >= review.rating ? 'text-gray-200' : ''}
                                             />
                                         ))}
                                     </div>
                                 </div>
-                                <p className="text-sm text-gray-700 leading-relaxed">{review.comment}</p>
+                                
+                                <div className="pl-11">
+                                    <p className="text-sm text-gray-700 leading-relaxed mt-1">{review.comment}</p>
 
-                                {/* Review Images */}
-                                {review.images && review.images.length > 0 && (
-                                    <div className="flex gap-2 mt-3 overflow-x-auto pb-2">
-                                        {review.images.map((img, idx) => (
-                                            <img
-                                                key={idx}
-                                                src={img}
-                                                alt="Review attachment"
-                                                className="w-20 h-20 object-cover rounded-lg border border-gray-200 shrink-0"
-                                                onError={(e) => {
-                                                    e.currentTarget.style.display = 'none';
-                                                }}
-                                            />
-                                        ))}
-                                    </div>
-                                )}
+                                    {/* Review Images */}
+                                    {review.images && review.images.length > 0 && (
+                                        <div className="flex gap-2 mt-3 overflow-x-auto pb-2 no-scrollbar">
+                                            {review.images.map((img, idx) => (
+                                                <img
+                                                    key={idx}
+                                                    src={img}
+                                                    alt="Review attachment"
+                                                    className="w-16 h-16 object-cover rounded-md border border-gray-200 shrink-0"
+                                                    onError={(e) => {
+                                                        e.currentTarget.style.display = 'none';
+                                                    }}
+                                                />
+                                            ))}
+                                        </div>
+                                    )}
 
-                                {/* Review Video */}
-                                {review.video && (
-                                    <div className="mt-3 max-w-xs">
-                                        <video controls className="w-full rounded-lg bg-black">
-                                            <source src={review.video} />
-                                            Your browser does not support the video tag.
-                                        </video>
-                                    </div>
-                                )}
-
-                                <p className="text-xs text-gray-500 mt-2">
-                                    {new Date(review.createdAt).toLocaleDateString('en-IN', {
-                                        year: 'numeric',
-                                        month: 'short',
-                                        day: 'numeric'
-                                    })}
-                                </p>
+                                    {/* Review Video */}
+                                    {review.video && (
+                                        <div className="mt-3 max-w-xs">
+                                            <video controls className="w-full rounded-md bg-black">
+                                                <source src={review.video} />
+                                                Your browser does not support the video tag.
+                                            </video>
+                                        </div>
+                                    )}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -141,19 +151,29 @@ export const ReviewsSection = ({ productId }: ReviewsSectionProps) => {
                     {!showAll && reviews.length > 2 && (
                         <button
                             onClick={() => setShowAll(true)}
-                            className="w-full py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors mt-4"
+                            className="w-full sm:w-auto px-6 py-2.5 border border-gray-200 rounded-full text-gray-700 text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition-all mt-6 mx-auto block shadow-sm"
                         >
                             View More Reviews
                         </button>
                     )}
 
-                    {showAll && hasMore && (
-                        <button
-                            onClick={() => setPage(page + 1)}
-                            className="w-full py-3 border border-gray-300 rounded-xl text-gray-700 font-medium hover:bg-gray-50 transition-colors mt-4"
-                        >
-                            Load More
-                        </button>
+                    {showAll && (
+                        <div className="flex flex-col sm:flex-row items-center justify-center gap-3 mt-6">
+                            {hasMore && (
+                                <button
+                                    onClick={() => setPage(page + 1)}
+                                    className="w-full sm:w-auto px-8 py-2.5 bg-black text-white rounded-full text-sm font-bold hover:bg-gray-800 transition-all shadow-md shadow-gray-200"
+                                >
+                                    Load More
+                                </button>
+                            )}
+                            <button
+                                onClick={() => setShowAll(false)}
+                                className="w-full sm:w-auto px-8 py-2.5 border border-gray-200 rounded-full text-gray-700 text-sm font-bold hover:bg-gray-50 hover:border-gray-300 transition-all shadow-sm"
+                            >
+                                View Less
+                            </button>
+                        </div>
                     )}
                 </>
             )}
