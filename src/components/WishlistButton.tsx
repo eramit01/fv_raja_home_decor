@@ -1,11 +1,7 @@
 import { useState } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
 import { FiHeart } from 'react-icons/fi';
 import { FaHeart } from 'react-icons/fa';
 import { useWishlist } from '../context/WishlistContext';
-import { useNavigate } from 'react-router-dom';
-import { RootState } from '../store';
-import { openLoginModal } from '../store/slices/uiSlice';
 
 interface WishlistButtonProps {
     productId: string;
@@ -19,9 +15,6 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
     size = 'md'
 }) => {
     const { isInWishlist, addToWishlist, removeFromWishlist } = useWishlist();
-    const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(false);
     const inWishlist = isInWishlist(productId);
 
@@ -34,12 +27,6 @@ export const WishlistButton: React.FC<WishlistButtonProps> = ({
     const handleClick = async (e: React.MouseEvent) => {
         e.preventDefault();
         e.stopPropagation();
-
-        if (!isAuthenticated) {
-            // navigate('/login');
-            dispatch(openLoginModal({ pendingAction: 'WISHLIST', pendingActionData: { productId } }));
-            return;
-        }
 
         setIsLoading(true);
         try {

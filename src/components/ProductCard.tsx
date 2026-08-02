@@ -1,8 +1,6 @@
 import { useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { addToCart, openCart } from '../store/slices/cartSlice';
-import { openLoginModal } from '../store/slices/uiSlice';
-import { RootState } from '../store';
 import { Product } from '../types';
 import { FiStar, FiShoppingBag } from 'react-icons/fi';
 import { WishlistButton } from './WishlistButton';
@@ -20,8 +18,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : 0;
 
-  const { isAuthenticated } = useSelector((state: RootState) => state.auth);
-
   const handleQuickAdd = (e: React.MouseEvent) => {
     e.stopPropagation(); // Prevent navigation
     const cartItem = {
@@ -32,11 +28,6 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       originalPrice: product.originalPrice,
       quantity: 1,
     };
-
-    if (!isAuthenticated) {
-      dispatch(openLoginModal({ pendingAction: 'CART', pendingActionData: cartItem }));
-      return;
-    }
 
     dispatch(addToCart(cartItem));
     dispatch(openCart());

@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../store';
+import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/slices/cartSlice';
-import { openLoginModal } from '../store/slices/uiSlice';
 import { toast } from 'react-hot-toast';
 import { calculateFinalPrice } from '../utils/pricingEngine';
 
@@ -123,7 +121,6 @@ const ProductDetailPage = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { user } = useSelector((state: RootState) => state.auth);
 
   // Product state
   const [product, setProduct] = useState<Product | null>(null);
@@ -303,14 +300,6 @@ const ProductDetailPage = () => {
       }
     };
 
-    if (!user) {
-      dispatch(openLoginModal({
-        pendingAction: 'CART',
-        pendingActionData: cartItem
-      }));
-      return;
-    }
-
     dispatch(addToCart(cartItem));
     toast.success('Added to cart!');
   };
@@ -318,8 +307,7 @@ const ProductDetailPage = () => {
   // Handle Buy Now
   const handleBuyNow = () => {
     handleAddToCart();
-    // navigate('/cart'); // handleAddToCart now handles redirect in LoginModal if not user
-    if (user) navigate('/cart');
+    navigate('/cart');
   };
 
   if (loading) {
