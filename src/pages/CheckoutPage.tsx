@@ -342,16 +342,6 @@ export const CheckoutPage = () => {
                 </div>
 
                 <div className="space-y-1">
-                  <label className="text-xs font-bold text-gray-700 uppercase tracking-wide">Email Address</label>
-                  <input
-                    {...register('email')}
-                    className={`w-full px-4 py-3 border rounded-lg focus:ring-1 focus:ring-black focus:border-black outline-none transition-all ${errors.email ? 'border-red-500 bg-red-50' : 'border-gray-200 bg-gray-50 focus:bg-white'}`}
-                    placeholder="e.g. amit@example.com"
-                  />
-                  {errors.email && <p className="text-xs text-red-500">{errors.email.message}</p>}
-                </div>
-
-                <div className="space-y-1">
                   <label className="text-xs font-bold text-gray-700 uppercase tracking-wide">Address</label>
                   <textarea
                     {...register('address')}
