@@ -1,4 +1,5 @@
 import { FaWhatsapp } from 'react-icons/fa'; // Assuming react-icons/fa is available, usually is. If not use FiMessageCircle.
+import { trackPixelEvent } from '../utils/metaPixel';
 
 export const WhatsAppButton = () => {
     // Admin phone number - ideally from env or config. Using a default or provided one.
@@ -7,6 +8,7 @@ export const WhatsAppButton = () => {
     const message = "Hi, I'm interested in your products.";
 
     const handleClick = () => {
+        trackPixelEvent('Contact', { channel: 'WhatsApp Floating Button' });
         window.open(`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`, '_blank');
     };
 

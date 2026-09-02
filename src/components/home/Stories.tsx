@@ -6,13 +6,56 @@ import { StoryCard } from './StoryCard';
 import { StoryModal } from './StoryModal';
 
 
+const DEFAULT_MANUFACTURING_STORIES: Story[] = [
+    {
+        _id: 'default-story-1',
+        title: 'Firozabad Glass Furnace & Molten Glass Blowing',
+        videoUrl: 'https://www.youtube.com/watch?v=2vjPBrBU-TM',
+        logoUrl: '/banners/Logo/logo2.png',
+        isActive: true,
+        order: 1,
+        views: 1420,
+        createdAt: new Date().toISOString()
+    },
+    {
+        _id: 'default-story-2',
+        title: 'Precision Mold Jar Shaping & Finishing',
+        videoUrl: 'https://www.youtube.com/watch?v=J---aiyznGQ',
+        logoUrl: '/banners/Logo/logo2.png',
+        isActive: true,
+        order: 2,
+        views: 1150,
+        createdAt: new Date().toISOString()
+    },
+    {
+        _id: 'default-story-3',
+        title: 'Quality Check & Thermal Shock Inspection',
+        videoUrl: 'https://www.youtube.com/watch?v=2vjPBrBU-TM',
+        logoUrl: '/banners/Logo/logo2.png',
+        isActive: true,
+        order: 3,
+        views: 980,
+        createdAt: new Date().toISOString()
+    },
+    {
+        _id: 'default-story-4',
+        title: 'Custom Color Spraying & Rim Polishing',
+        videoUrl: 'https://www.youtube.com/watch?v=J---aiyznGQ',
+        logoUrl: '/banners/Logo/logo2.png',
+        isActive: true,
+        order: 4,
+        views: 1310,
+        createdAt: new Date().toISOString()
+    }
+];
+
 interface StoriesProps {
     hideHeader?: boolean;
 }
 
 export const Stories: React.FC<StoriesProps> = ({ hideHeader = false }) => {
-    const [stories, setStories] = useState<Story[]>([]);
-    const [activeStoryIndex, setActiveStoryIndex] = useState<number | null>(null);
+    const [stories, setStories] = useState<Story[]>(DEFAULT_MANUFACTURING_STORIES);
+    const [activeStoryIndex, setActiveStoryIndex] = useState<number | null>(0);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedStoryIndex, setSelectedStoryIndex] = useState(0);
     const scrollRef = useRef<HTMLDivElement>(null);
@@ -22,14 +65,12 @@ export const Stories: React.FC<StoriesProps> = ({ hideHeader = false }) => {
         const fetchStories = async () => {
             try {
                 const response = await storyService.getActiveStories();
-                if (response.success) {
+                if (response.success && response.data?.stories && response.data.stories.length > 0) {
                     setStories(response.data.stories);
-                    if (response.data.stories.length > 0) {
-                        setActiveStoryIndex(0);
-                    }
+                    setActiveStoryIndex(0);
                 }
             } catch (error) {
-                console.error('Failed to fetch stories', error);
+                console.error('Failed to fetch stories, using default manufacturing process videos', error);
             }
         };
         fetchStories();
@@ -67,8 +108,6 @@ export const Stories: React.FC<StoriesProps> = ({ hideHeader = false }) => {
             scrollRef.current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
         }
     };
-
-    if (stories.length === 0) return null;
 
     return (
         <section className="py-8 bg-white border-b border-gray-100 overflow-hidden" ref={containerRef}>

@@ -12,6 +12,7 @@ import { OrderService } from '../services/order.service';
 import { AddressSelector } from '../components/AddressSelector';
 import { getErrorMessage } from '../utils/errorHandler';
 import { toast } from 'react-hot-toast';
+import { trackPixelEvent } from '../utils/metaPixel';
 
 // 1. Validation Schema
 const checkoutSchema = z.object({
@@ -51,6 +52,13 @@ export const CheckoutPage = () => {
 
   useEffect(() => {
     loadRazorpay();
+    if (items.length > 0) {
+      trackPixelEvent('InitiateCheckout', {
+        num_items: items.length,
+        value: total,
+        currency: 'INR'
+      });
+    }
   }, []);
 
   const {

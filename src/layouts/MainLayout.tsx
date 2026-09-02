@@ -37,6 +37,7 @@ export const MainLayout = () => {
 
   // Hide category section and bottom nav on specific pages
   const isCheckoutPage = location.pathname === '/checkout';
+  const isBulkEnquiryPage = location.pathname === '/bulk-enquiry';
   const isAuthPage = location.pathname === '/login' || location.pathname === '/signup';
 
   // Routes where CategorySection should be hidden
@@ -53,7 +54,7 @@ export const MainLayout = () => {
 
       {isCheckoutPage ? (
         <CheckoutHeader />
-      ) : (
+      ) : isBulkEnquiryPage ? null : (
         <>
           {/* Announcement Bar */}
           <AnnouncementBar />

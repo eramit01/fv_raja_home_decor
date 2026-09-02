@@ -2,6 +2,7 @@ import React, { useEffect } from 'react';
 import { useSearchParams, Link } from 'react-router-dom';
 import { FiCheckCircle, FiPackage, FiPhone, FiArrowRight } from 'react-icons/fi';
 import confetti from 'canvas-confetti';
+import { trackPixelEvent } from '../utils/metaPixel';
 
 export const OrderSuccessPage = () => {
     const [searchParams] = useSearchParams();
@@ -14,7 +15,14 @@ export const OrderSuccessPage = () => {
             spread: 70,
             origin: { y: 0.6 }
         });
-    }, []);
+
+        if (orderId) {
+            trackPixelEvent('Purchase', {
+                order_id: orderId,
+                currency: 'INR'
+            });
+        }
+    }, [orderId]);
 
     return (
         <div className="min-h-[80vh] flex items-center justify-center p-4">

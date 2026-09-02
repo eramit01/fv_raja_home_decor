@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { addToCart } from '../store/slices/cartSlice';
 import { toast } from 'react-hot-toast';
 import { calculateFinalPrice } from '../utils/pricingEngine';
+import { trackPixelEvent } from '../utils/metaPixel';
 
 import { FiShoppingBag } from 'react-icons/fi';
 import { SEO } from '../components/SEO';
@@ -177,6 +178,13 @@ const ProductDetailPage = () => {
         if (data.success) {
           const fetchedProduct = data.data.product;
           setProduct(fetchedProduct);
+          trackPixelEvent('ViewContent', {
+            content_name: fetchedProduct.name,
+            content_ids: [fetchedProduct._id],
+            content_type: 'product',
+            value: fetchedProduct.price,
+            currency: 'INR'
+          });
         }
       } catch (error) {
         console.error('Failed to fetch product:', error);
@@ -301,6 +309,13 @@ const ProductDetailPage = () => {
     };
 
     dispatch(addToCart(cartItem));
+    trackPixelEvent('AddToCart', {
+      content_name: product.name,
+      content_ids: [product._id],
+      content_type: 'product',
+      value: (cartItem.price || product.price) * (cartItem.quantity || 1),
+      currency: 'INR'
+    });
     toast.success('Added to cart!');
   };
 
