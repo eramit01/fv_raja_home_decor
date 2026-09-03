@@ -23,7 +23,7 @@ export const HomePage = () => {
     const fetchData = async () => {
       try {
         const [productsData, bannersData, categoriesData] = await Promise.all([
-          productService.getAllProducts({ showOnHome: true, limit: 500 } as any), // Fetch only home products
+          productService.getAllProducts({ showOnHome: true, limit: 100 } as any), // Fetch only home products
           bannerService.getActiveBanners('home'),
           categoryService.getCategories()
         ]);

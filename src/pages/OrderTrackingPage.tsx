@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { FiChevronLeft, FiPackage, FiTruck, FiCheckCircle, FiBox, FiMapPin, FiClock } from 'react-icons/fi';
 import { OrderService } from '../services/order.service';
+import { OrderSkeleton } from '../components/skeletons/OrderSkeleton';
 
 export const OrderTrackingPage = () => {
     const { id } = useParams<{ id: string }>();
@@ -27,8 +28,11 @@ export const OrderTrackingPage = () => {
 
     if (loading) {
         return (
-            <div className="min-h-screen bg-gray-50 flex justify-center items-center">
-                <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600"></div>
+            <div className="min-h-screen bg-gray-50 py-8">
+                <div className="container mx-auto px-4 max-w-4xl">
+                    <div className="h-8 w-48 bg-gray-200 animate-pulse rounded mb-6"></div>
+                    <OrderSkeleton />
+                </div>
             </div>
         );
     }
